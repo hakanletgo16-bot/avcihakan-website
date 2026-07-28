@@ -1,168 +1,115 @@
-/* Genel Ayarlar */
+<!DOCTYPE html>
+<html lang="en">
 
-* {
-    box-sizing: border-box;
-}
+<head>
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #ffffff;
-    color: #222;
-    line-height: 1.6;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Hakan Avcı | Design & Product Development Engineer</title>
 
-/* Menü */
+<meta name="description" content="Design & Product Development Engineer specializing in thermoforming, plastic and rubber components for automotive and industrial applications.">
 
-header {
-    background: #0d1b2a;
-    padding: 20px 60px;
-}
+<link rel="stylesheet" href="style.css">
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-.logo {
-    color: white;
-    font-size: 26px;
-    font-weight: bold;
-}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-    margin: 0;
-    padding: 0;
-}
+</head>
 
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-}
+<body>
 
-nav ul li a:hover {
-    color: #4da3ff;
-}
+<header>
 
+<nav class="container">
 
-/* Ana Bölüm */
+<div class="logo">
 
-.hero {
-    min-height: 75vh;
-    padding: 100px 80px;
-    background: linear-gradient(
-        135deg,
-        #0d1b2a,
-        #1b4965
-    );
-    color: white;
-}
+HAKAN AVCI
 
+</div>
 
-.hero h1 {
-    font-size: 52px;
-    max-width: 900px;
-    margin-bottom: 20px;
-}
+<ul>
 
+<li><a href="index.html">Home</a></li>
 
-.hero h2 {
-    color: #9fd3ff;
-    font-size: 30px;
-    max-width: 800px;
-}
+<li><a href="about.html">About</a></li>
 
+<li><a href="expertise.html">Expertise</a></li>
 
-.hero p {
-    font-size: 20px;
-    max-width: 850px;
-}
+<li><a href="industries.html">Industries</a></li>
 
+<li><a href="projects.html">Projects</a></li>
 
-/* Bölümler */
+<li><a href="skills.html">Skills</a></li>
 
-section {
-    padding: 70px 80px;
-}
+<li><a href="contact.html">Contact</a></li>
 
+</ul>
 
-section h2 {
-    text-align: center;
-    color: #0d1b2a;
-    font-size: 36px;
-    margin-bottom: 50px;
-}
+</nav>
 
+</header>
 
-/* Uzmanlık Kartları */
+<section class="hero">
 
-section > div {
-    background: #f5f7fa;
-    padding: 30px;
-    margin: 20px auto;
-    max-width: 900px;
-    border-left: 5px solid #1b4965;
-}
+<div class="container hero-grid">
 
+<div>
 
-section h3 {
-    color: #1b4965;
-    font-size: 26px;
-}
+<p class="subtitle">
+DESIGN & PRODUCT DEVELOPMENT ENGINEER
+</p>
 
+<h1>
 
-/* Footer */
+Thermoforming,
+Plastic &
+Rubber Components
 
-footer {
-    background: #0d1b2a;
-    color: white;
-    text-align: center;
-    padding: 25px;
-}
+</h1>
 
+<p class="hero-text">
 
-/* Mobil Uyumluluk */
+Developing engineering solutions for automotive,
+commercial vehicles,
+construction machinery and
+agricultural machinery.
 
-@media(max-width:768px){
+</p>
 
-header {
-    padding:20px;
-}
+<div class="buttons">
 
-nav {
-    flex-direction:column;
-}
+<a href="projects.html" class="primary">
 
-nav ul {
-    flex-direction:column;
-    gap:15px;
-    margin-top:20px;
-}
+View Projects
 
+</a>
 
-.hero {
-    padding:50px 25px;
-}
+<a href="contact.html" class="secondary">
 
+Contact Me
 
-.hero h1 {
-    font-size:36px;
-}
+</a>
 
+</div>
 
-.hero h2 {
-    font-size:24px;
-}
+</div>
 
+<div class="hero-image">
 
-section {
-    padding:50px 25px;
-}
+ENGINEERING
 
-}
+</div>
+
+</div>
+
+</section>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
