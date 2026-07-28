@@ -1,22 +1,168 @@
+/* Genel Ayarlar */
+
+* {
+    box-sizing: border-box;
+}
+
 body {
+    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #222;
+    line-height: 1.6;
+}
+
+
+/* Menü */
+
+header {
+    background: #0d1b2a;
+    padding: 20px 60px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    color: #222222;
 }
 
-h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
 }
 
-h2 {
-    font-size: 28px;
-    color: #1f3c5b;
+nav ul li a:hover {
+    color: #4da3ff;
 }
 
-p {
-    font-size: 18px;
-    line-height: 1.6;
+
+/* Ana Bölüm */
+
+.hero {
+    min-height: 75vh;
+    padding: 100px 80px;
+    background: linear-gradient(
+        135deg,
+        #0d1b2a,
+        #1b4965
+    );
+    color: white;
+}
+
+
+.hero h1 {
+    font-size: 52px;
+    max-width: 900px;
+    margin-bottom: 20px;
+}
+
+
+.hero h2 {
+    color: #9fd3ff;
+    font-size: 30px;
+    max-width: 800px;
+}
+
+
+.hero p {
+    font-size: 20px;
+    max-width: 850px;
+}
+
+
+/* Bölümler */
+
+section {
+    padding: 70px 80px;
+}
+
+
+section h2 {
+    text-align: center;
+    color: #0d1b2a;
+    font-size: 36px;
+    margin-bottom: 50px;
+}
+
+
+/* Uzmanlık Kartları */
+
+section > div {
+    background: #f5f7fa;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 900px;
+    border-left: 5px solid #1b4965;
+}
+
+
+section h3 {
+    color: #1b4965;
+    font-size: 26px;
+}
+
+
+/* Footer */
+
+footer {
+    background: #0d1b2a;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+
+/* Mobil Uyumluluk */
+
+@media(max-width:768px){
+
+header {
+    padding:20px;
+}
+
+nav {
+    flex-direction:column;
+}
+
+nav ul {
+    flex-direction:column;
+    gap:15px;
+    margin-top:20px;
+}
+
+
+.hero {
+    padding:50px 25px;
+}
+
+
+.hero h1 {
+    font-size:36px;
+}
+
+
+.hero h2 {
+    font-size:24px;
+}
+
+
+section {
+    padding:50px 25px;
+}
+
 }
