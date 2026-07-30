@@ -1,115 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hakan Avcı | Design- und Produktentwicklungsingenieur</title>
+<meta name="description" content="Hakan Avcı — CATIA, Kunststoffkomponenten, Thermoform und Trim-Design.">
+<meta name="theme-color" content="#0a0c0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<style>
+:root, [data-theme="dark"] {
+  --bg:#0a0c0e; --bg-elevated:#12151a; --card:#161a20; --card-hover:#1b2028;
+  --line:#2a3038; --line-soft:#1e2329; --text:#f4f4f0; --soft:#9ba3ad; --muted:#6a7380;
+  --accent:#d9a441; --accent-bright:#e8b85a; --accent-dim:rgba(217,164,65,.14); --accent-glow:rgba(217,164,65,.38);
+  --header-bg:rgba(10,12,14,.9); --max:1120px; --radius:18px; --radius-sm:12px;
+}
+[data-theme="light"] {
+  --bg:#f5f4f0; --bg-elevated:#ebe9e3; --card:#ffffff; --card-hover:#faf9f6;
+  --line:#ddd9d0; --line-soft:#e8e5de; --text:#1a1c1e; --soft:#5a6169; --muted:#8a9199;
+  --accent:#b8862d; --accent-bright:#c9963a; --accent-dim:rgba(184,134,45,.12); --accent-glow:rgba(184,134,45,.25);
+  --header-bg:rgba(245,244,240,.92);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s}
+::selection{background:var(--accent);color:#111}
+.container{max-width:var(--max);margin:0 auto;padding:0 28px}
+.progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),#f0c96a);width:0%;z-index:200;box-shadow:0 0 14px var(--accent-glow)}
+#webgl-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.92;transition:opacity .4s}
+[data-theme="light"] #webgl-bg{opacity:.55}
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
+header.scrolled{background:var(--header-bg);backdrop-filter:blur(20px) saturate(1.4);border-bottom-color:var(--line-soft)}
+nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-family:"Space Grotesk",sans-serif;font-size:19px;font-weight:700;letter-spacing:.4px;color:var(--text);text-decoration:none;transition:transform .3s,color .3s;white-space:nowrap}
+.logo:hover{transform:scale(1.03)}.logo span{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:6px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{color:var(--soft);text-decoration:none;font-size:13.5px;font-weight:500;padding:8px 12px;border-radius:8px;transition:color .25s;position:relative;white-space:nowrap}
+.nav-links a::after{content:"";position:absolute;bottom:4px;left:12px;right:12px;height:1.5px;background:var(--accent);transform:scaleX(0);transition:transform .3s;transform-origin:right}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-links a:hover{color:var(--text)}
+.lang-switch,.theme-switch{display:flex;align-items:center;gap:3px;padding:3px;background:rgba(128,128,128,.06);border:1px solid var(--line);border-radius:10px}
+.lang-btn,.theme-btn{display:flex;align-items:center;justify-content:center;width:34px;height:30px;border:none;background:transparent;border-radius:7px;cursor:pointer;font-size:16px;line-height:1;transition:background .2s,opacity .2s,transform .2s;opacity:.55;color:var(--text)}
+.lang-btn:hover,.theme-btn:hover{opacity:1;background:rgba(128,128,128,.1)}
+.lang-btn.active,.theme-btn.active{opacity:1;background:var(--accent-dim);box-shadow:0 0 0 1px rgba(217,164,65,.35)}
+.menu-btn{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:transparent;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.menu-btn span{display:block;width:17px;height:2px;background:var(--text);transition:.3s}
+.menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-btn.open span:nth-child(2){opacity:0}
+.menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-nav{display:none;position:fixed;inset:70px 0 0 0;background:var(--bg);backdrop-filter:blur(24px);padding:28px;flex-direction:column;gap:4px;z-index:99;opacity:0;transform:translateY(-10px);transition:opacity .35s,transform .35s,background .35s}
+.mobile-nav.open{display:flex;opacity:1;transform:translateY(0)}
+.mobile-nav a{color:var(--text);text-decoration:none;font-size:17px;font-weight:500;padding:15px 0;border-bottom:1px solid var(--line-soft)}
+.mobile-nav a:hover{color:var(--accent)}
+.mobile-controls{display:flex;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line-soft);align-items:center;flex-wrap:wrap}
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 90px;position:relative;overflow:hidden;z-index:1}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.tag{display:inline-flex;align-items:center;gap:10px;color:var(--accent);font-size:11.5px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:26px;opacity:0;transform:translateY(24px);animation:fadeUp .8s cubic-bezier(.22,1,.36,1) .15s forwards}
+.tag-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent-glow);animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--accent-glow)}70%{box-shadow:0 0 0 11px transparent}100%{box-shadow:0 0 0 0 transparent}}
+h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(36px,6.2vw,60px);font-weight:700;line-height:1.08;letter-spacing:-1.3px;margin-bottom:22px}
+.h1-line{display:block;opacity:0;transform:translateY(36px);animation:fadeUp .9s cubic-bezier(.22,1,.36,1) forwards}
+.h1-line:nth-child(1){animation-delay:.3s}
+.h1-line:nth-child(2){animation-delay:.42s;color:var(--soft);font-weight:500}
+.hero-desc{font-size:16.5px;color:var(--soft);max-width:540px;margin-bottom:36px;opacity:0;transform:translateY(24px);animation:fadeUp .85s cubic-bezier(.22,1,.36,1) .55s forwards;line-height:1.7}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;opacity:0;transform:translateY(24px);animation:fadeUp .85s cubic-bezier(.22,1,.36,1) .7s forwards}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:11px;font-size:14.5px;font-weight:600;text-decoration:none;transition:transform .3s,background .25s,box-shadow .3s,border-color .25s;position:relative;overflow:hidden}
+.btn-primary{background:var(--accent);color:#111}
+.btn-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.32) 50%,transparent 70%);transform:translateX(-100%);transition:transform .55s}
+.btn-primary:hover::before{transform:translateX(100%)}
+.btn-primary:hover{background:var(--accent-bright);transform:translateY(-2px) scale(1.02);box-shadow:0 10px 28px var(--accent-glow)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn-ghost:hover{border-color:var(--accent);background:var(--accent-dim);transform:translateY(-2px)}
+section{padding:100px 0;position:relative;z-index:1}
+.section-label{display:inline-block;color:var(--accent);font-size:11.5px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:10px}
+h2{font-family:"Space Grotesk",sans-serif;font-size:clamp(26px,3.8vw,36px);font-weight:700;letter-spacing:-.6px;margin-bottom:14px}
+.section-intro{color:var(--soft);font-size:15.5px;max-width:540px;margin-bottom:44px;line-height:1.65}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-scale{opacity:0;transform:translateY(32px) scale(.97);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:translateY(0) scale(1)}
+.reveal-delay-1{transition-delay:.07s}.reveal-delay-2{transition-delay:.14s}.reveal-delay-3{transition-delay:.21s}.reveal-delay-4{transition-delay:.28s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:start}
+.about-text p{color:var(--soft);font-size:15px;margin-bottom:16px;line-height:1.7}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;transition:border-color .35s,transform .4s,box-shadow .35s,background .35s;position:relative;overflow:hidden}
+.stat-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform .4s}
+.stat-card:hover::before{transform:scaleX(1)}
+.stat-card:hover{border-color:rgba(217,164,65,.45);transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.15)}
+.stat-number{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;color:var(--accent);margin-bottom:3px}
+.stat-label{font-size:12px;color:var(--muted)}
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tool-chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 12px;text-align:center;transition:border-color .3s,transform .35s,background .3s}
+.tool-chip:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-4px)}
+.tool-chip strong{display:block;font-size:13px;font-weight:600;margin-bottom:3px}
+.tool-chip span{font-size:11px;color:var(--muted)}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.skill-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;transition:border-color .35s,transform .45s,background .35s,box-shadow .35s;height:100%;position:relative;overflow:hidden}
+.skill-card::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--accent-dim),transparent 65%);opacity:0;transition:opacity .4s}
+.skill-card:hover::after{opacity:1}
+.skill-card:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,.12)}
+.skill-icon{width:42px;height:42px;border-radius:11px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:17px;transition:transform .4s,background .3s;position:relative;z-index:1}
+.skill-card:hover .skill-icon{transform:scale(1.1) rotate(-5deg);background:rgba(217,164,65,.26)}
+.skill-card h3{font-size:15.5px;font-weight:600;margin-bottom:8px;position:relative;z-index:1}
+.skill-card p{color:var(--soft);font-size:13px;line-height:1.65;position:relative;z-index:1}
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;position:relative;z-index:1}
+.skill-tags span{font-size:10.5px;font-weight:500;color:var(--accent);background:var(--accent-dim);padding:3px 8px;border-radius:5px}
+.industry-section{background:var(--bg-elevated);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);transition:background .35s}
+.industry-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.industry-card{grid-column:span 2;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px 18px;transition:border-color .35s,transform .4s,box-shadow .35s,background .35s}
+.industry-card:nth-child(4),.industry-card:nth-child(5){grid-column:span 3}
+.industry-card:hover{border-color:var(--accent);transform:translateY(-5px) scale(1.01);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.industry-card h3{font-size:15px;font-weight:600;margin-bottom:7px;transition:color .25s}
+.industry-card:hover h3{color:var(--accent)}
+.industry-card p{color:var(--soft);font-size:13px;line-height:1.6}
+.value-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+.value-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 16px;transition:border-color .3s,transform .35s,background .35s}
+.value-item:hover{border-color:rgba(217,164,65,.4);transform:translateY(-3px)}
+.value-num{font-family:"Space Grotesk",sans-serif;font-size:14px;font-weight:700;color:var(--accent);min-width:26px;padding-top:1px}
+.value-item h4{font-size:14px;font-weight:600;margin-bottom:3px}
+.value-item p{font-size:12.5px;color:var(--soft);line-height:1.55}
+footer{padding:32px 0;border-top:1px solid var(--line-soft);color:var(--muted);font-size:12.5px;text-align:center;position:relative;z-index:1}
+@media(max-width:960px){.tools-grid{grid-template-columns:repeat(2,1fr)}.skills-grid{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr;gap:36px}.industry-grid{grid-template-columns:1fr 1fr}.industry-card,.industry-card:nth-child(4),.industry-card:nth-child(5){grid-column:span 1}.value-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.nav-links{display:none}.menu-btn{display:flex}.industry-grid{grid-template-columns:1fr}.about-stats{grid-template-columns:1fr 1fr}.tools-grid{grid-template-columns:1fr 1fr}h1{letter-spacing:-1px}section{padding:72px 0}.hero{padding:100px 0 60px;min-height:auto}.container{padding:0 20px}#webgl-bg{opacity:.45}[data-theme="light"] #webgl-bg{opacity:.35}}
+</style>
+</head>
+<body data-theme="dark">
+<div class="progress-bar" id="progressBar"></div>
+<canvas id="webgl-bg"></canvas>
 
+<header id="header">
+  <div class="container">
+    <nav>
+      <a href="#" class="logo">HAKAN AVCI<span>.</span></a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#about" data-i18n="nav_about">Über mich</a>
+          <a href="#tools" data-i18n="nav_tools">Software</a>
+          <a href="#skills" data-i18n="nav_skills">Kompetenzen</a>
+          <a href="#industry" data-i18n="nav_industry">Branchen</a>
+        </div>
+        <div class="theme-switch" role="group" aria-label="Theme">
+          <button class="theme-btn active" data-theme-set="dark" title="Dark">🌙</button>
+          <button class="theme-btn" data-theme-set="light" title="Light">☀️</button>
+        </div>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="de" title="Deutsch">🇩🇪</button>
+          <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+          <button class="lang-btn" data-lang="tr" title="Türkçe">🇹🇷</button>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
 
-HAKAN AVCI.
-Über mich
-Software
-Kompetenzen
-Branchen
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about" onclick="closeMenu()" data-i18n="nav_about">Über mich</a>
+  <a href="#tools" onclick="closeMenu()" data-i18n="nav_tools">Software</a>
+  <a href="#skills" onclick="closeMenu()" data-i18n="nav_skills">Kompetenzen</a>
+  <a href="#industry" onclick="closeMenu()" data-i18n="nav_industry">Branchen</a>
+  <div class="mobile-controls">
+    <div class="theme-switch">
+      <button class="theme-btn active" data-theme-set="dark" title="Dark">🌙</button>
+      <button class="theme-btn" data-theme-set="light" title="Light">☀️</button>
+    </div>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="de">🇩🇪</button>
+      <button class="lang-btn" data-lang="en">🇬🇧</button>
+      <button class="lang-btn" data-lang="tr">🇹🇷</button>
+    </div>
+  </div>
+</div>
 
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="tag"><span class="tag-dot"></span><span data-i18n="tag">Design- und Produktentwicklungsingenieur</span></div>
+      <h1>
+        <span class="h1-line" data-i18n="h1_1">Produktdesign</span>
+        <span class="h1-line" data-i18n="h1_2">und Entwicklung</span>
+      </h1>
+      <p class="hero-desc" data-i18n="hero_desc">CATIA-basiertes Design von Kunststoffkomponenten, Thermoform- und Trim-Lösungen. Produktentwicklung für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.</p>
+      <div class="hero-actions">
+        <a href="#about" class="btn btn-primary" data-i18n="btn_profile">Profil ansehen</a>
+        <a href="#skills" class="btn btn-ghost" data-i18n="btn_skills">Kompetenzen</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-🇩🇪 🇬🇧 🇹🇷
+<section id="about">
+  <div class="container">
+    <div class="reveal"><span class="section-label" data-i18n="s1_label">01 — Profil</span><h2 data-i18n="s1_title">Über mich</h2></div>
+    <div class="about-grid">
+      <div class="about-text reveal reveal-delay-1">
+        <p data-i18n="about_p1">Hallo, ich bin Hakan Avcı. Als Ingenieur im Bereich Design und Produktentwicklung arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.</p>
+        <p data-i18n="about_p2">Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung und Produktoptimierung.</p>
+        <p data-i18n="about_p3">In meiner Arbeit verbinde ich Funktionalität, Fertigungstauglichkeit (DFM), Kosten, Qualität und Montagefreundlichkeit zu umsetzbaren Engineering-Lösungen.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card reveal-scale reveal-delay-1"><div class="stat-number">CATIA</div><div class="stat-label" data-i18n="stat1">3D-Design & Flächen</div></div>
+        <div class="stat-card reveal-scale reveal-delay-2"><div class="stat-number">Thermoform</div><div class="stat-label" data-i18n="stat2">Fertigungsorientiert</div></div>
+        <div class="stat-card reveal-scale reveal-delay-3"><div class="stat-number">DFM / DFA</div><div class="stat-label" data-i18n="stat3">Fertigungsanalyse</div></div>
+        <div class="stat-card reveal-scale reveal-delay-4"><div class="stat-number">Trim</div><div class="stat-label" data-i18n="stat4">Innen- & Außenbauteile</div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-DESIGN- UND PRODUKTENTWICKLUNGSINGENIEUR
-Produktdesign
-und Entwicklung
-CATIA-basiertes Design von Kunststoffkomponenten, Thermoform- und Trim-Lösungen. Produktentwicklung für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.
-Profil ansehen Kompetenzen
-01 — PROFIL
-Über mich
-Hallo, ich bin Hakan Avcı. Als Ingenieur im Bereich Design und Produktentwicklung arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.
-Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung und Produktoptimierung.
-In meiner Arbeit verbinde ich Funktionalität, Fertigungstauglichkeit (DFM), Kosten, Qualität und Montagefreundlichkeit zu umsetzbaren Engineering-Lösungen.
-CATIA
-3D-Design & Flächen
-Thermoform
-Fertigungsorientiert
-DFM / DFA
-Fertigungsanalyse
-Trim
-Innen- & Außenbauteile
-02 — TOOLS
-Software & Umfeld
-CAD-, PLM- und Engineering-Werkzeuge, die in der Produktentwicklung gefragt sind.
-CATIA V5 / V6
-Part · Surface · Assembly
-3DEXPERIENCE
-Plattform & Kollaboration
-Solid / Surface
-Volumen- & Flächenmodell
-Drafting
-2D-Zeichnungen
-GD&T
-Toleranzen & Maßketten
-PLM
-ENOVIA / Datenmanagement
-BOM
-Stückliste & Revision
-MS Office
-Bericht · Angebot · Präsentation
-03 — ERFAHRUNG
-Kompetenzen
-Kompetenzen, die Unternehmen in der Produktentwicklung für Kunststoff und Trim suchen.
-◈
-3D-Design mit CATIA
-Volumen- und Flächenmodellierung, Baugruppen, Zeichnungen und Revisionsmanagement. Serientaugliche Teile und Unterbaugruppen.
-Part Design
-Generative Shape
-Assembly
-⬡
-Thermoform & Trim
-Innen- und Außen-Trim-Komponenten thermoformgerecht auslegen: Ziehtiefe, Wandstärke und Werkzeugabstimmung.
-Thermoforming
-Interior Trim
-Exterior Trim
-◎
-Kunststoffkomponenten
-Kunststoffteil-Design, Werkstoffwahl, Wandstärke, Versteifungsrippen, Verbindungselemente und Montage-Schnittstellen.
-Plastic Design
-Ribs & Bosses
-Fastening
-◇
-DFM / DFA
-Fertigungs- und montagegerechte Auslegung. Kosten, Werkzeugstandzeit, Toleranzketten und Serienrisiken reduzieren.
-DFM
-DFA
-Cost Down
-▣
-Produktentwicklungsprozess
-Angebot und Machbarkeit, Kostenbewertung, Prozessentwicklung, Prototyp-Optimierung und Serienvorbereitung.
-Feasibility
-APQP
-Change Mgmt
-⬡
-Schnittstellenarbeit
-Abstimmung mit Werkzeugbau, Produktion, Qualität, Einkauf und Kunde. Lastenheft, Revision und Freigabeprozesse.
-Tooling
-Quality
-Customer
-FOKUS
-Was Unternehmen priorisieren
-01
-Fertigungsgerechtes Design
-Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.
-02
-Revision & Datendisziplin
-Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.
-03
-Kunde & Werkzeugbau
-Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.
-04
-Kosten- und Termintreue
-Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.
-04 — BRANCHEN
-Einsatzfelder
-Branchen mit hohem Bedarf an Kunststoff- und Trim-Lösungen.
-Automotive
-Innen- und Außen-Trim sowie Kunststoffteile für Pkw.
-Nutzfahrzeuge
-Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.
-Baumaschinen
-Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.
-Landmaschinen
-Kabinenkomponenten für Traktoren und Landtechnik.
-Industrieanwendungen
-Kunststoffkomponenten für weitere industrielle Einsatzfelder.
-© 2026 Hakan Avcı — Design- und Produktentwicklungsingenieur
+<section id="tools">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-i18n="s2_label">02 — Tools</span>
+      <h2 data-i18n="s2_title">Software & Umfeld</h2>
+      <p class="section-intro" data-i18n="s2_intro">CAD-, PLM- und Engineering-Werkzeuge, die in der Produktentwicklung gefragt sind.</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-chip reveal-scale reveal-delay-1"><strong>CATIA V5 / V6</strong><span data-i18n="tool1">Part · Surface · Assembly</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-2"><strong>3DEXPERIENCE</strong><span data-i18n="tool2">Plattform & Kollaboration</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-3"><strong>Solid / Surface</strong><span data-i18n="tool3">Volumen- & Flächenmodell</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-4"><strong>Drafting</strong><span data-i18n="tool4">2D-Zeichnungen</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-1"><strong>GD&T</strong><span data-i18n="tool5">Toleranzen & Maßketten</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-2"><strong>PLM</strong><span data-i18n="tool6">ENOVIA / Datenmanagement</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-3"><strong>BOM</strong><span data-i18n="tool7">Stückliste & Revision</span></div>
+      <div class="tool-chip reveal-scale reveal-delay-4"><strong>MS Office</strong><span data-i18n="tool8">Bericht · Angebot · Präsentation</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-i18n="s3_label">03 — Erfahrung</span>
+      <h2 data-i18n="s3_title">Kompetenzen</h2>
+      <p class="section-intro" data-i18n="s3_intro">Kompetenzen, die Unternehmen in der Produktentwicklung für Kunststoff und Trim suchen.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal-scale reveal-delay-1">
+        <div class="skill-icon">◈</div>
+        <h3 data-i18n="sk1_t">3D-Design mit CATIA</h3>
+        <p data-i18n="sk1_p">Volumen- und Flächenmodellierung, Baugruppen, Zeichnungen und Revisionsmanagement. Serientaugliche Teile und Unterbaugruppen.</p>
+        <div class="skill-tags"><span>Part Design</span><span>Generative Shape</span><span>Assembly</span></div>
+      </div>
+      <div class="skill-card reveal-scale reveal-delay-2">
+        <div class="skill-icon">⬡</div>
+        <h3 data-i18n="sk2_t">Thermoform & Trim</h3>
+        <p data-i18n="sk2_p">Innen- und Außen-Trim-Komponenten thermoformgerecht auslegen: Ziehtiefe, Wandstärke und Werkzeugabstimmung.</p>
+        <div class="skill-tags"><span>Thermoforming</span><span>Interior Trim</span><span>Exterior Trim</span></div>
+      </div>
+      <div class="skill-card reveal-scale reveal-delay-3">
+        <div class="skill-icon">◎</div>
+        <h3 data-i18n="sk3_t">Kunststoffkomponenten</h3>
+        <p data-i18n="sk3_p">Kunststoffteil-Design, Werkstoffwahl, Wandstärke, Versteifungsrippen, Verbindungselemente und Montage-Schnittstellen.</p>
+        <div class="skill-tags"><span>Plastic Design</span><span>Ribs & Bosses</span><span>Fastening</span></div>
+      </div>
+      <div class="skill-card reveal-scale reveal-delay-1">
+        <div class="skill-icon">◇</div>
+        <h3 data-i18n="sk4_t">DFM / DFA</h3>
+        <p data-i18n="sk4_p">Fertigungs- und montagegerechte Auslegung. Kosten, Werkzeugstandzeit, Toleranzketten und Serienrisiken reduzieren.</p>
+        <div class="skill-tags"><span>DFM</span><span>DFA</span><span>Cost Down</span></div>
+      </div>
+      <div class="skill-card reveal-scale reveal-delay-2">
+        <div class="skill-icon">▣</div>
+        <h3 data-i18n="sk5_t">Produktentwicklungsprozess</h3>
+        <p data-i18n="sk5_p">Angebot und Machbarkeit, Kostenbewertung, Prozessentwicklung, Prototyp-Optimierung und Serienvorbereitung.</p>
+        <div class="skill-tags"><span>Feasibility</span><span>APQP</span><span>Change Mgmt</span></div>
+      </div>
+      <div class="skill-card reveal-scale reveal-delay-3">
+        <div class="skill-icon">⬡</div>
+        <h3 data-i18n="sk6_t">Schnittstellenarbeit</h3>
+        <p data-i18n="sk6_p">Abstimmung mit Werkzeugbau, Produktion, Qualität, Einkauf und Kunde. Lastenheft, Revision und Freigabeprozesse.</p>
+        <div class="skill-tags"><span>Tooling</span><span>Quality</span><span>Customer</span></div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:52px">
+      <span class="section-label" data-i18n="focus_label">Fokus</span>
+      <h2 style="font-size:clamp(20px,2.8vw,26px);margin-bottom:18px" data-i18n="focus_title">Was Unternehmen priorisieren</h2>
+    </div>
+    <div class="value-grid">
+      <div class="value-item reveal-scale reveal-delay-1"><div class="value-num">01</div><div><h4 data-i18n="v1_t">Fertigungsgerechtes Design</h4><p data-i18n="v1_p">Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.</p></div></div>
+      <div class="value-item reveal-scale reveal-delay-2"><div class="value-num">02</div><div><h4 data-i18n="v2_t">Revision & Datendisziplin</h4><p data-i18n="v2_p">Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.</p></div></div>
+      <div class="value-item reveal-scale reveal-delay-3"><div class="value-num">03</div><div><h4 data-i18n="v3_t">Kunde & Werkzeugbau</h4><p data-i18n="v3_p">Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.</p></div></div>
+      <div class="value-item reveal-scale reveal-delay-4"><div class="value-num">04</div><div><h4 data-i18n="v4_t">Kosten- und Termintreue</h4><p data-i18n="v4_p">Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="industry" class="industry-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-i18n="s4_label">04 — Branchen</span>
+      <h2 data-i18n="s4_title">Einsatzfelder</h2>
+      <p class="section-intro" data-i18n="s4_intro">Branchen mit hohem Bedarf an Kunststoff- und Trim-Lösungen.</p>
+    </div>
+    <div class="industry-grid">
+      <div class="industry-card reveal-scale reveal-delay-1"><h3 data-i18n="ind1_t">Automotive</h3><p data-i18n="ind1_p">Innen- und Außen-Trim sowie Kunststoffteile für Pkw.</p></div>
+      <div class="industry-card reveal-scale reveal-delay-2"><h3 data-i18n="ind2_t">Nutzfahrzeuge</h3><p data-i18n="ind2_p">Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.</p></div>
+      <div class="industry-card reveal-scale reveal-delay-3"><h3 data-i18n="ind3_t">Baumaschinen</h3><p data-i18n="ind3_p">Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.</p></div>
+      <div class="industry-card reveal-scale reveal-delay-1"><h3 data-i18n="ind4_t">Landmaschinen</h3><p data-i18n="ind4_p">Kabinenkomponenten für Traktoren und Landtechnik.</p></div>
+      <div class="industry-card reveal-scale reveal-delay-2"><h3 data-i18n="ind5_t">Industrieanwendungen</h3><p data-i18n="ind5_p">Kunststoffkomponenten für weitere industrielle Einsatzfelder.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container" data-i18n="footer">© 2026 Hakan Avcı — Design- und Produktentwicklungsingenieur</div>
+</footer>
+
+<script>
+const I18N={de:{nav_about:"Über mich",nav_tools:"Software",nav_skills:"Kompetenzen",nav_industry:"Branchen",tag:"Design- und Produktentwicklungsingenieur",h1_1:"Produktdesign",h1_2:"und Entwicklung",hero_desc:"CATIA-basiertes Design von Kunststoffkomponenten, Thermoform- und Trim-Lösungen. Produktentwicklung für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.",btn_profile:"Profil ansehen",btn_skills:"Kompetenzen",s1_label:"01 — Profil",s1_title:"Über mich",about_p1:"Hallo, ich bin Hakan Avcı. Als Ingenieur im Bereich Design und Produktentwicklung arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.",about_p2:"Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung und Produktoptimierung.",about_p3:"In meiner Arbeit verbinde ich Funktionalität, Fertigungstauglichkeit (DFM), Kosten, Qualität und Montagefreundlichkeit zu umsetzbaren Engineering-Lösungen.",stat1:"3D-Design & Flächen",stat2:"Fertigungsorientiert",stat3:"Fertigungsanalyse",stat4:"Innen- & Außenbauteile",s2_label:"02 — Tools",s2_title:"Software & Umfeld",s2_intro:"CAD-, PLM- und Engineering-Werkzeuge, die in der Produktentwicklung gefragt sind.",tool1:"Part · Surface · Assembly",tool2:"Plattform & Kollaboration",tool3:"Volumen- & Flächenmodell",tool4:"2D-Zeichnungen",tool5:"Toleranzen & Maßketten",tool6:"ENOVIA / Datenmanagement",tool7:"Stückliste & Revision",tool8:"Bericht · Angebot · Präsentation",s3_label:"03 — Erfahrung",s3_title:"Kompetenzen",s3_intro:"Kompetenzen, die Unternehmen in der Produktentwicklung für Kunststoff und Trim suchen.",sk1_t:"3D-Design mit CATIA",sk1_p:"Volumen- und Flächenmodellierung, Baugruppen, Zeichnungen und Revisionsmanagement. Serientaugliche Teile und Unterbaugruppen.",sk2_t:"Thermoform & Trim",sk2_p:"Innen- und Außen-Trim-Komponenten thermoformgerecht auslegen: Ziehtiefe, Wandstärke und Werkzeugabstimmung.",sk3_t:"Kunststoffkomponenten",sk3_p:"Kunststoffteil-Design, Werkstoffwahl, Wandstärke, Versteifungsrippen, Verbindungselemente und Montage-Schnittstellen.",sk4_t:"DFM / DFA",sk4_p:"Fertigungs- und montagegerechte Auslegung. Kosten, Werkzeugstandzeit, Toleranzketten und Serienrisiken reduzieren.",sk5_t:"Produktentwicklungsprozess",sk5_p:"Angebot und Machbarkeit, Kostenbewertung, Prozessentwicklung, Prototyp-Optimierung und Serienvorbereitung.",sk6_t:"Schnittstellenarbeit",sk6_p:"Abstimmung mit Werkzeugbau, Produktion, Qualität, Einkauf und Kunde. Lastenheft, Revision und Freigabeprozesse.",focus_label:"Fokus",focus_title:"Was Unternehmen priorisieren",v1_t:"Fertigungsgerechtes Design",v1_p:"Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.",v2_t:"Revision & Datendisziplin",v2_p:"Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.",v3_t:"Kunde & Werkzeugbau",v3_p:"Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.",v4_t:"Kosten- und Termintreue",v4_p:"Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.",s4_label:"04 — Branchen",s4_title:"Einsatzfelder",s4_intro:"Branchen mit hohem Bedarf an Kunststoff- und Trim-Lösungen.",ind1_t:"Automotive",ind1_p:"Innen- und Außen-Trim sowie Kunststoffteile für Pkw.",ind2_t:"Nutzfahrzeuge",ind2_p:"Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.",ind3_t:"Baumaschinen",ind3_p:"Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.",ind4_t:"Landmaschinen",ind4_p:"Kabinenkomponenten für Traktoren und Landtechnik.",ind5_t:"Industrieanwendungen",ind5_p:"Kunststoffkomponenten für weitere industrielle Einsatzfelder.",footer:"© 2026 Hakan Avcı — Design- und Produktentwicklungsingenieur"},en:{nav_about:"About",nav_tools:"Software",nav_skills:"Skills",nav_industry:"Industries",tag:"Design & Product Development Engineer",h1_1:"Product Design",h1_2:"and Development",hero_desc:"CATIA-based design of plastic components, thermoforming and trim solutions. Product development for automotive, commercial vehicles, construction and agricultural machinery.",btn_profile:"View profile",btn_skills:"Skills",s1_label:"01 — Profile",s1_title:"About me",about_p1:"Hello, I am Hakan Avcı. As a design and product development engineer, I work on plastic component development, manufacturability assessments and preparation for series production.",about_p2:"Focus areas include automotive, commercial vehicles, construction and agricultural machinery: interior and exterior trim parts, thermoform-ready development and product improvement.",about_p3:"In my work I balance functionality, manufacturability (DFM), cost, quality and ease of assembly to deliver practical engineering solutions.",stat1:"3D design & surfaces",stat2:"Production-oriented",stat3:"Manufacturability",stat4:"Interior & exterior",s2_label:"02 — Tools",s2_title:"Software & environment",s2_intro:"CAD, PLM and engineering tools commonly required in product development.",tool1:"Part · Surface · Assembly",tool2:"Platform & collaboration",tool3:"Solid & surface modeling",tool4:"2D drawings",tool5:"Tolerances & stacks",tool6:"ENOVIA / data management",tool7:"BOM & revision",tool8:"Reports · quotes · decks",s3_label:"03 — Experience",s3_title:"Skills",s3_intro:"Capabilities companies look for in plastic and trim product development.",sk1_t:"3D design with CATIA",sk1_p:"Solid and surface modeling, assemblies, drawings and revision control. Series-ready parts and sub-assemblies.",sk2_t:"Thermoform & trim",sk2_p:"Interior and exterior trim designed for thermoforming: draw depth, wall thickness and tool coordination.",sk3_t:"Plastic components",sk3_p:"Plastic part design, material selection, wall thickness, ribs, fastening features and assembly interfaces.",sk4_t:"DFM / DFA",sk4_p:"Design for manufacturing and assembly. Reduce cost, tooling risk, tolerance stack-up and series issues.",sk5_t:"Product development process",sk5_p:"Quotes and feasibility, cost evaluation, process development, post-prototype improvement and series readiness.",sk6_t:"Cross-functional work",sk6_p:"Coordination with tooling, production, quality, purchasing and the customer. Specs, revisions and release cycles.",focus_label:"Focus",focus_title:"What companies prioritize",v1_t:"Manufacturable design",v1_p:"Solutions aligned with tooling and process limits, cost and quality targets.",v2_t:"Revision & data discipline",v2_p:"Clear revision control in PLM, up-to-date BOM and change management.",v3_t:"Customer & tooling",v3_p:"Technical specs, approval loops and clear communication with toolmakers.",v4_t:"Cost and schedule focus",v4_p:"Cost- and schedule-aware approach from quotation through series production.",s4_label:"04 — Industries",s4_title:"Application areas",s4_intro:"Sectors with strong demand for plastic and trim solutions.",ind1_t:"Automotive",ind1_p:"Interior and exterior trim and plastic parts for passenger cars.",ind2_t:"Commercial vehicles",ind2_p:"Cabin components, functional plastic parts and production-ready design.",ind3_t:"Construction machinery",ind3_p:"Interior/exterior trim and durable plastic solutions for heavy equipment.",ind4_t:"Agricultural machinery",ind4_p:"Cabin components for tractors and agricultural equipment.",ind5_t:"Industrial applications",ind5_p:"Plastic components adapted for further industrial use cases.",footer:"© 2026 Hakan Avcı — Design & Product Development Engineer"},tr:{nav_about:"Hakkımda",nav_tools:"Yazılımlar",nav_skills:"Yetkinlikler",nav_industry:"Sektörler",tag:"Tasarım ve Ürün Geliştirme Mühendisi",h1_1:"Ürün Tasarımı",h1_2:"ve Geliştirme",hero_desc:"CATIA ile plastik komponent, termoform ve trim tasarımı. Otomotiv, ticari araç, iş ve tarım makineleri için ürün geliştirme.",btn_profile:"Profili İncele",btn_skills:"Yetkinlikler",s1_label:"01 — Profil",s1_title:"Hakkımda",about_p1:"Merhaba, ben Hakan Avcı. Tasarım ve ürün geliştirme alanında çalışan bir mühendis olarak plastik komponentlerin geliştirilmesi, üretilebilirlik değerlendirmeleri ve seri üretime hazırlık süreçlerinde görev almaktayım.",about_p2:"Özellikle otomotiv, ticari araç, iş makinesi ve tarım makineleri sektörlerinde iç ve dış trim parçalarının tasarımı, termoform üretim yöntemine uygun geliştirme çalışmaları ve ürün iyileştirme süreçleri üzerine deneyim sahibiyim.",about_p3:"Çalışmalarımda fonksiyonellik, üretilebilirlik (DFM), maliyet, kalite ve montaj kolaylığını birlikte ele alarak uygulanabilir mühendislik çözümleri geliştirmeye odaklanıyorum.",stat1:"3D tasarım & yüzey",stat2:"Üretim odaklı tasarım",stat3:"Üretilebilirlik analizi",stat4:"İç & dış komponentler",s2_label:"02 — Araçlar",s2_title:"Yazılımlar & Ortam",s2_intro:"Ürün geliştirme süreçlerinde aranan CAD, PLM ve mühendislik araçları.",tool1:"Part · Surface · Assembly",tool2:"Platform & işbirliği",tool3:"Katı & yüzey modelleme",tool4:"2D teknik resim",tool5:"Tolerans & ölçü zinciri",tool6:"ENOVIA / veri yönetimi",tool7:"Parça listesi & revizyon",tool8:"Rapor · teklif · sunum",s3_label:"03 — Deneyim",s3_title:"Yetkinlikler",s3_intro:"Otomotiv ve endüstriyel ekipman şirketlerinin aradığı ürün geliştirme yetkinlikleri.",sk1_t:"CATIA ile 3D Tasarım",sk1_p:"Katı ve yüzey modelleme, montaj tasarımı, teknik resim ve revizyon yönetimi. Seri üretime uygun parça ve alt gruplar.",sk2_t:"Termoform & Trim",sk2_p:"İç ve dış trim komponentlerinin termoform üretim yöntemine uygun tasarımı, çekme payı, kalınlık ve kalıp koordinasyonu.",sk3_t:"Plastik Komponent",sk3_p:"Plastik parça tasarımı, malzeme seçimi, et kalınlığı, nervür, bağlama elemanları ve montaj arayüzleri.",sk4_t:"DFM / DFA",sk4_p:"Üretilebilirlik ve montaj kolaylığı analizi. Maliyet, kalıp ömrü, tolerans yığılması ve seri üretim risklerinin azaltılması.",sk5_t:"Ürün Geliştirme Süreci",sk5_p:"Teklif ve fizibilite, maliyet değerlendirme, proses geliştirme, prototip sonrası iyileştirme ve seri üretim desteği.",sk6_t:"Çapraz Fonksiyonel Çalışma",sk6_p:"Kalıp, üretim, kalite, satın alma ve müşteri ekipleriyle koordinasyon. Teknik şartname, revizyon ve onay süreçleri.",focus_label:"Odak",focus_title:"Şirketlerin önem verdiği maddeler",v1_t:"Üretilebilir tasarım",v1_p:"Kalıp ve proses kısıtlarına uygun, maliyet ve kalite hedeflerini dengeleyen çözümler.",v2_t:"Revizyon & veri disiplini",v2_p:"PLM ortamında net revizyon takibi, BOM güncelliği ve değişiklik yönetimi.",v3_t:"Müşteri ve kalıp koordinasyonu",v3_p:"Teknik şartname, onay döngüsü ve kalıp firmasıyla net iletişim.",v4_t:"Maliyet ve süre bilinci",v4_p:"Teklif aşamasından seri üretime kadar maliyet ve termin odaklı yaklaşım.",s4_label:"04 — Sektörler",s4_title:"Çalışma Alanları",s4_intro:"Plastik ve trim çözümlerinin yoğun kullanıldığı endüstriyel alanlar.",ind1_t:"Otomotiv",ind1_p:"Binek araç iç ve dış trim komponentleri ve plastik parça geliştirme.",ind2_t:"Ticari Araçlar",ind2_p:"Kabin içi komponentler, fonksiyonel plastik parçalar ve üretime yönelik tasarım.",ind3_t:"İş Makineleri",ind3_p:"Ağır ekipman kabinleri için iç/dış trim ve dayanıklı plastik çözümler.",ind4_t:"Tarım Makineleri",ind4_p:"Traktör ve tarım makineleri kabin komponentleri için tasarım.",ind5_t:"Endüstriyel Uygulamalar",ind5_p:"Farklı sektörlerde plastik komponentlerin tasarım ve üretime entegrasyonu.",footer:"© 2026 Hakan Avcı — Tasarım ve Ürün Geliştirme Mühendisi"}};
+
+function setLang(lang){if(!I18N[lang])return;document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(I18N[lang][k]!==undefined)el.textContent=I18N[lang][k]});document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===lang));const t={de:'Hakan Avcı | Design- und Produktentwicklungsingenieur',en:'Hakan Avcı | Design & Product Development Engineer',tr:'Hakan Avcı | Tasarım ve Ürün Geliştirme Mühendisi'};document.title=t[lang];localStorage.setItem('lang',lang)}
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.getAttribute('data-lang'))));
+
+function setTheme(theme){document.body.setAttribute('data-theme',theme);document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-theme-set')===theme));localStorage.setItem('theme',theme);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=theme==='dark'?'#0a0c0e':'#f5f4f0'}
+document.querySelectorAll('.theme-btn').forEach(b=>b.addEventListener('click',()=>setTheme(b.getAttribute('data-theme-set'))));
+(function(){const savedTheme=localStorage.getItem('theme')||'dark';const savedLang=localStorage.getItem('lang')||'de';setTheme(savedTheme);setLang(savedLang)})();
+
+(function(){const canvas=document.getElementById('webgl-bg');if(!canvas||typeof THREE==='undefined'){console.warn('Three.js not loaded');return;}const isMobile=window.innerWidth<700;const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000);camera.position.set(0,0,9);const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});renderer.setSize(window.innerWidth,window.innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x000000,0);const group=new THREE.Group();scene.add(group);const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.35,0.38,isMobile?80:160,isMobile?8:16),new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.55}));group.add(knot);const ringMat=new THREE.MeshBasicMaterial({color:0xd9a441,transparent:true,opacity:0.32});const ring=new THREE.Mesh(new THREE.TorusGeometry(2.6,0.018,8,isMobile?48:96),ringMat);ring.rotation.x=Math.PI/2.4;group.add(ring);const ring2=ring.clone();ring2.rotation.x=Math.PI/3.2;ring2.rotation.y=0.55;ring2.material=ringMat.clone();ring2.material.opacity=0.2;group.add(ring2);group.add(new THREE.Mesh(new THREE.IcosahedronGeometry(3.15,1),new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.11})));const accents=[];const shapes=[new THREE.OctahedronGeometry(0.2,0),new THREE.TetrahedronGeometry(0.24,0),new THREE.BoxGeometry(0.26,0.26,0.26)];for(let i=0;i<(isMobile?6:12);i++){const m=new THREE.Mesh(shapes[i%3],new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.38}));const a=(i/12)*Math.PI*2,r=3.7+Math.random()*1.1;m.position.set(Math.cos(a)*r,(Math.random()-0.5)*2.8,Math.sin(a)*r*0.65);m.userData={speed:0.28+Math.random()*0.45,offset:Math.random()*Math.PI*2,baseY:m.position.y};group.add(m);accents.push(m)}const pCount=isMobile?180:480;const pPos=new Float32Array(pCount*3);for(let i=0;i<pCount;i++){pPos[i*3]=(Math.random()-0.5)*14;pPos[i*3+1]=(Math.random()-0.5)*10;pPos[i*3+2]=(Math.random()-0.5)*10}const pGeo=new THREE.BufferGeometry();pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));scene.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xd9a441,size:isMobile?0.035:0.045,transparent:true,opacity:0.45,blending:THREE.AdditiveBlending,depthWrite:false})));let mouseX=0,mouseY=0,targetX=0,targetY=0;window.addEventListener('mousemove',e=>{mouseX=(e.clientX/window.innerWidth)*2-1;mouseY=-(e.clientY/window.innerHeight)*2+1});window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)});const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();knot.rotation.x=t*0.17;knot.rotation.y=t*0.26;accents.forEach(m=>{m.rotation.x+=0.01*m.userData.speed;m.rotation.y+=0.014*m.userData.speed;m.position.y=m.userData.baseY+Math.sin(t*m.userData.speed+m.userData.offset)*0.32});targetX+=(mouseX*1.15-targetX)*0.04;targetY+=(mouseY*0.75-targetY)*0.04;group.rotation.y=targetX*0.32;group.rotation.x=targetY*0.22;group.position.x=targetX*0.35;group.position.y=targetY*0.22;const base=document.body.getAttribute('data-theme')==='light'?0.55:0.92;canvas.style.opacity=Math.max(0.08,1-window.scrollY/(window.innerHeight*0.95))*(isMobile?base*0.55:base);renderer.render(scene,camera)}animate()})();
+
+const progressBar=document.getElementById('progressBar');window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(h>0?(s/h)*100:0)+'%'});
+const header=document.getElementById('header');window.addEventListener('scroll',()=>header.classList.toggle('scrolled',window.scrollY>40));
+const menuBtn=document.getElementById('menuBtn'),mobileNav=document.getElementById('mobileNav');menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileNav.classList.toggle('open')});
+function closeMenu(){menuBtn.classList.remove('open');mobileNav.classList.remove('open')}
+const reveals=document.querySelectorAll('.reveal,.reveal-scale');const observer=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
