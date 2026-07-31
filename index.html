@@ -3,154 +3,264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hakan Avcı | Design- und Produktentwicklungsingenieur</title>
-<meta name="description" content="Hakan Avcı — CATIA, Kunststoffkomponenten, Thermoform und Trim-Design.">
-<meta name="theme-color" content="#0a0c0e">
+<title>Hakan Avcı | Design & Produktentwicklung</title>
+<meta name="description" content="Hakan Avcı — CATIA, Design und Produktentwicklung von Kunststoffkomponenten, Thermoform- und Trim-Lösungen für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.">
+<meta name="theme-color" content="#f6f5f1">
+<meta property="og:title" content="Hakan Avcı | Design & Produktentwicklung">
+<meta property="og:description" content="CATIA-basierte Design- und Produktentwicklung von Kunststoffkomponenten, Thermoform- und Trim-Lösungen.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://avcihakan.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js">
+<link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
 <style>
 :root, [data-theme="dark"] {
-  --bg:#0a0c0e; --bg-elevated:#12151a; --card:#161a20; --card-hover:#1b2028;
-  --line:#2a3038; --line-soft:#1e2329; --text:#f4f4f0; --soft:#9ba3ad; --muted:#6a7380;
-  --accent:#d9a441; --accent-bright:#e8b85a; --accent-dim:rgba(217,164,65,.14); --accent-glow:rgba(217,164,65,.38);
-  --header-bg:rgba(10,12,14,.9); --max:1120px; --radius:18px; --radius-sm:12px;
+  --bg:#0a0c0e; --bg-elevated:#0f1115; --card:#14181e; --card-hover:#1a1f27;
+  --line:#262d36; --line-soft:#1c2229; --text:#f4f4f0; --soft:#9ba3ad; --muted:#5a626d;
+  --accent:#d9a441; --accent-bright:#e8b85a; --accent-dim:rgba(217,164,65,.12); --accent-glow:rgba(217,164,65,.35);
+  --accent-blue:#4a90d9; --accent-blue-dim:rgba(74,144,217,.12);
+  --header-bg:rgba(10,12,14,.85); --max:1140px; --radius:16px; --radius-sm:12px;
+  --grid-line:rgba(217,164,65,.04); --grid-line-strong:rgba(217,164,65,.07);
+  --shadow-card:0 8px 32px rgba(0,0,0,.28); --shadow-hover:0 20px 50px rgba(0,0,0,.35);
 }
 [data-theme="light"] {
-  --bg:#f5f4f0; --bg-elevated:#ebe9e3; --card:#ffffff; --card-hover:#faf9f6;
-  --line:#ddd9d0; --line-soft:#e8e5de; --text:#1a1c1e; --soft:#5a6169; --muted:#8a9199;
-  --accent:#b8862d; --accent-bright:#c9963a; --accent-dim:rgba(184,134,45,.12); --accent-glow:rgba(184,134,45,.25);
-  --header-bg:rgba(245,244,240,.92);
+  --bg:#f6f5f1; --bg-elevated:#eeece6; --card:#ffffff; --card-hover:#faf9f6;
+  --line:#d8d4cc; --line-soft:#e5e1d9; --text:#1a1c1e; --soft:#555c64; --muted:#8a9199;
+  --accent:#b8862d; --accent-bright:#c9963a; --accent-dim:rgba(184,134,45,.10); --accent-glow:rgba(184,134,45,.22);
+  --accent-blue:#2e6fb0; --accent-blue-dim:rgba(46,111,176,.10);
+  --header-bg:rgba(246,245,241,.88);
+  --grid-line:rgba(184,134,45,.05); --grid-line-strong:rgba(184,134,45,.08);
+  --shadow-card:0 4px 20px rgba(0,0,0,.06); --shadow-hover:0 12px 36px rgba(0,0,0,.10);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
 ::selection{background:var(--accent);color:#111}
-.container{max-width:var(--max);margin:0 auto;padding:0 28px}
-.progress-bar{position:fixed;top:0;left:0;height:2.5px;background:linear-gradient(90deg,var(--accent),#f0c96a);width:0%;z-index:200;box-shadow:0 0 14px var(--accent-glow)}
-#webgl-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.92;transition:opacity .4s}
-[data-theme="light"] #webgl-bg{opacity:.55}
-header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
-header.scrolled{background:var(--header-bg);backdrop-filter:blur(20px) saturate(1.4);border-bottom-color:var(--line-soft)}
-nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{font-family:"Space Grotesk",sans-serif;font-size:19px;font-weight:700;letter-spacing:.4px;color:var(--text);text-decoration:none;transition:transform .3s,color .3s;white-space:nowrap}
-.logo:hover{transform:scale(1.03)}.logo span{color:var(--accent)}
-.nav-right{display:flex;align-items:center;gap:6px}
+a{text-decoration:none;color:inherit}
+img,canvas,svg{display:block;max-width:100%}
+
+/* === BLUEPRINT GRID BACKGROUND === */
+.blueprint-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px),linear-gradient(var(--grid-line-strong) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line-strong) 1px,transparent 1px);
+  background-size:20px 20px,20px 20px,100px 100px,100px 100px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 20%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 20%,transparent 70%);
+  opacity:.7;transition:opacity .4s}
+[data-theme="light"] .blueprint-grid{opacity:.5}
+
+/* === SCROLL PROGRESS === */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-bright),var(--accent-blue));width:0%;z-index:200;box-shadow:0 0 12px var(--accent-glow);transition:width .1s linear}
+
+/* === WEBGL CANVAS === */
+#webgl-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9;transition:opacity .4s}
+[data-theme="light"] #webgl-bg{opacity:.5}
+
+.container{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+/* === HEADER === */
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s,border-color .4s,backdrop-filter .4s,box-shadow .4s;border-bottom:1px solid transparent}
+header.scrolled{background:var(--header-bg);backdrop-filter:blur(24px) saturate(1.5);border-bottom-color:var(--line-soft);box-shadow:0 1px 20px rgba(0,0,0,.1)}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative}
+.nav-left{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.site-title{font-family:"Manrope",sans-serif;font-size:17px;font-weight:700;letter-spacing:.3px;color:var(--text);white-space:nowrap;pointer-events:none}
+.site-title span{color:var(--accent)}
+@media(max-width:700px){.site-title{font-size:14px}}
+@media(max-width:400px){.site-title{display:none}}
+.nav-right{display:flex;align-items:center;gap:6px;margin-left:auto}
 .nav-links{display:flex;align-items:center;gap:2px}
-.nav-links a{color:var(--soft);text-decoration:none;font-size:13.5px;font-weight:500;padding:8px 12px;border-radius:8px;transition:color .25s;position:relative;white-space:nowrap}
-.nav-links a::after{content:"";position:absolute;bottom:4px;left:12px;right:12px;height:1.5px;background:var(--accent);transform:scaleX(0);transition:transform .3s;transform-origin:right}
+.nav-links a{color:var(--soft);font-size:13px;font-weight:500;padding:8px 13px;border-radius:8px;transition:color .25s,background .25s;position:relative;white-space:nowrap}
+.nav-links a::after{content:"";position:absolute;bottom:4px;left:13px;right:13px;height:1.5px;background:var(--accent);transform:scaleX(0);transition:transform .35s cubic-bezier(.16,1,.3,1);transform-origin:right}
 .nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
 .nav-links a:hover{color:var(--text)}
-.lang-switch,.theme-switch{display:flex;align-items:center;gap:3px;padding:3px;background:rgba(128,128,128,.06);border:1px solid var(--line);border-radius:10px}
-.lang-btn,.theme-btn{display:flex;align-items:center;justify-content:center;width:34px;height:30px;border:none;background:transparent;border-radius:7px;cursor:pointer;font-size:16px;line-height:1;transition:background .2s,opacity .2s,transform .2s;opacity:.55;color:var(--text)}
-.lang-btn:hover,.theme-btn:hover{opacity:1;background:rgba(128,128,128,.1)}
-.lang-btn.active,.theme-btn.active{opacity:1;background:var(--accent-dim);box-shadow:0 0 0 1px rgba(217,164,65,.35)}
+.lang-switch{display:flex;align-items:center;gap:3px;padding:3px;background:rgba(128,128,128,.06);border:1px solid var(--line);border-radius:10px}
+.lang-btn{display:flex;align-items:center;justify-content:center;width:32px;height:28px;border:none;background:transparent;border-radius:7px;cursor:pointer;font-size:15px;line-height:1;transition:background .2s,opacity .2s,transform .2s;opacity:.5;color:var(--text)}
+.lang-btn:hover{opacity:1;background:rgba(128,128,128,.1)}
+.lang-btn.active{opacity:1;background:var(--accent-dim);box-shadow:0 0 0 1px rgba(217,164,65,.3)}
+.theme-toggle{position:relative;width:56px;height:30px;border-radius:15px;background:rgba(128,128,128,.12);border:1px solid var(--line);cursor:pointer;padding:0;transition:background .4s,border-color .4s;flex-shrink:0}
+.theme-toggle-knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;transition:transform .4s cubic-bezier(.16,1,.3,1),background .3s;box-shadow:0 2px 8px var(--accent-glow)}
+.theme-toggle[data-theme-val="dark"] .theme-toggle-knob{transform:translateX(26px)}
+.theme-toggle-knob svg{width:14px;height:14px;display:block}
+.theme-toggle[data-theme-val="dark"] .theme-toggle-knob .icon-sun{display:none}
+.theme-toggle[data-theme-val="light"] .theme-toggle-knob .icon-moon{display:none}
 .menu-btn{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:transparent;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
 .menu-btn span{display:block;width:17px;height:2px;background:var(--text);transition:.3s}
 .menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .menu-btn.open span:nth-child(2){opacity:0}
 .menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-nav{display:none;position:fixed;inset:70px 0 0 0;background:var(--bg);backdrop-filter:blur(24px);padding:28px;flex-direction:column;gap:4px;z-index:99;opacity:0;transform:translateY(-10px);transition:opacity .35s,transform .35s,background .35s}
+.mobile-nav{display:none;position:fixed;inset:72px 0 0 0;background:var(--bg);backdrop-filter:blur(24px);padding:28px;flex-direction:column;gap:4px;z-index:99;opacity:0;transform:translateY(-10px);transition:opacity .35s,transform .35s}
 .mobile-nav.open{display:flex;opacity:1;transform:translateY(0)}
-.mobile-nav a{color:var(--text);text-decoration:none;font-size:17px;font-weight:500;padding:15px 0;border-bottom:1px solid var(--line-soft)}
+.mobile-nav a{color:var(--text);font-size:17px;font-weight:500;padding:15px 0;border-bottom:1px solid var(--line-soft)}
 .mobile-nav a:hover{color:var(--accent)}
 .mobile-controls{display:flex;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line-soft);align-items:center;flex-wrap:wrap}
-.hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 90px;position:relative;overflow:hidden;z-index:1}
-.hero-content{position:relative;z-index:2;max-width:680px}
-.tag{display:inline-flex;align-items:center;gap:10px;color:var(--accent);font-size:11.5px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:26px;opacity:0;transform:translateY(24px);animation:fadeUp .8s cubic-bezier(.22,1,.36,1) .15s forwards}
-.tag-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent-glow);animation:pulse 2.2s ease-out infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 var(--accent-glow)}70%{box-shadow:0 0 0 11px transparent}100%{box-shadow:0 0 0 0 transparent}}
-h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(36px,6.2vw,60px);font-weight:700;line-height:1.08;letter-spacing:-1.3px;margin-bottom:22px}
-.h1-line{display:block;opacity:0;transform:translateY(36px);animation:fadeUp .9s cubic-bezier(.22,1,.36,1) forwards}
-.h1-line:nth-child(1){animation-delay:.3s}
-.h1-line:nth-child(2){animation-delay:.42s;color:var(--soft);font-weight:500}
-.hero-desc{font-size:16.5px;color:var(--soft);max-width:540px;margin-bottom:36px;opacity:0;transform:translateY(24px);animation:fadeUp .85s cubic-bezier(.22,1,.36,1) .55s forwards;line-height:1.7}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px;opacity:0;transform:translateY(24px);animation:fadeUp .85s cubic-bezier(.22,1,.36,1) .7s forwards}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:11px;font-size:14.5px;font-weight:600;text-decoration:none;transition:transform .3s,background .25s,box-shadow .3s,border-color .25s;position:relative;overflow:hidden}
+
+/* === HERO === */
+.hero{min-height:100vh;display:flex;align-items:center;padding:130px 0 100px;position:relative;overflow:hidden;z-index:1}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,var(--bg) 0%,var(--bg) 30%,transparent 60%);pointer-events:none}
+.hero-content{position:relative;z-index:3;max-width:680px}
+.tag{display:inline-flex;align-items:center;gap:10px;color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px;padding:7px 14px;border:1px solid var(--accent-dim);border-radius:20px;background:var(--accent-dim)}
+.tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent-glow);animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--accent-glow)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+h1{font-family:"Manrope",sans-serif;font-size:clamp(38px,6.5vw,66px);font-weight:700;line-height:1.15;letter-spacing:-1.5px;margin-bottom:24px}
+.h1-line{display:block}
+.h1-line-inner{display:block}
+.h1-line:nth-child(2) .h1-line-inner{color:var(--soft);font-weight:500}
+.hero-desc{font-size:17px;color:var(--soft);max-width:560px;margin-bottom:40px;line-height:1.7}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:12px;font-size:14px;font-weight:600;transition:transform .3s cubic-bezier(.16,1,.3,1),background .25s,box-shadow .3s,border-color .25s;position:relative;overflow:hidden;cursor:pointer;border:none}
 .btn-primary{background:var(--accent);color:#111}
-.btn-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.32) 50%,transparent 70%);transform:translateX(-100%);transition:transform .55s}
+.btn-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-100%);transition:transform .6s}
 .btn-primary:hover::before{transform:translateX(100%)}
-.btn-primary:hover{background:var(--accent-bright);transform:translateY(-2px) scale(1.02);box-shadow:0 10px 28px var(--accent-glow)}
+.btn-primary:hover{background:var(--accent-bright);transform:translateY(-2px);box-shadow:0 12px 30px var(--accent-glow)}
 .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
 .btn-ghost:hover{border-color:var(--accent);background:var(--accent-dim);transform:translateY(-2px)}
-section{padding:100px 0;position:relative;z-index:1}
-.section-label{display:inline-block;color:var(--accent);font-size:11.5px;font-weight:600;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:10px}
-h2{font-family:"Space Grotesk",sans-serif;font-size:clamp(26px,3.8vw,36px);font-weight:700;letter-spacing:-.6px;margin-bottom:14px}
-.section-intro{color:var(--soft);font-size:15.5px;max-width:540px;margin-bottom:44px;line-height:1.65}
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-scale{opacity:0;transform:translateY(32px) scale(.97);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-.reveal-scale.visible{opacity:1;transform:translateY(0) scale(1)}
-.reveal-delay-1{transition-delay:.07s}.reveal-delay-2{transition-delay:.14s}.reveal-delay-3{transition-delay:.21s}.reveal-delay-4{transition-delay:.28s}
-@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-.about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:start}
-.about-text p{color:var(--soft);font-size:15px;margin-bottom:16px;line-height:1.7}
+.btn svg{width:16px;height:16px}
+
+/* Hero floating stats */
+.hero-stats{display:flex;gap:10px;margin-top:48px;z-index:3;pointer-events:none;max-width:560px;flex-wrap:wrap}
+.hero-stat{display:flex;flex-direction:column;gap:2px;padding:10px 16px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);box-shadow:var(--shadow-card);backdrop-filter:blur(10px);pointer-events:auto;transition:border-color .3s,transform .4s;min-width:120px}
+.hero-stat:hover{border-color:var(--accent);transform:translateY(-2px)}
+.hero-stat-num{font-family:"Manrope",sans-serif;font-size:16px;font-weight:700;color:var(--accent);white-space:nowrap}
+.hero-stat-label{font-size:12px;color:var(--muted);font-family:"JetBrains Mono",monospace;letter-spacing:.5px}
+
+/* === SECTIONS === */
+section{padding:110px 0;position:relative;z-index:1}
+.section-label{display:inline-block;color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;padding:4px 10px;border:1px solid var(--accent-dim);border-radius:6px;background:var(--accent-dim)}
+h2{font-family:"Manrope",sans-serif;font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.8px;margin-bottom:16px}
+.section-intro{color:var(--soft);font-size:16px;max-width:560px;margin-bottom:48px;line-height:1.65}
+
+/* === REVEAL ANIMATIONS (GSAP) === */
+.reveal{opacity:0;transform:translateY(40px)}
+.reveal-scale{opacity:0;transform:translateY(30px) scale(.96)}
+
+/* === ABOUT === */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:start}
+.about-text p{color:var(--soft);font-size:15.5px;margin-bottom:18px;line-height:1.75}
+.about-text p strong{color:var(--text);font-weight:600}
 .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.stat-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;transition:border-color .35s,transform .4s,box-shadow .35s,background .35s;position:relative;overflow:hidden}
-.stat-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform .4s}
+.stat-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px 20px;transition:border-color .35s,transform .4s,box-shadow .35s,background .35s;position:relative;overflow:hidden}
+.stat-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transition:transform .5s cubic-bezier(.16,1,.3,1)}
 .stat-card:hover::before{transform:scaleX(1)}
-.stat-card:hover{border-color:rgba(217,164,65,.45);transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.15)}
-.stat-number{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;color:var(--accent);margin-bottom:3px}
-.stat-label{font-size:12px;color:var(--muted)}
+.stat-card:hover{border-color:rgba(217,164,65,.4);transform:translateY(-5px);box-shadow:var(--shadow-hover)}
+.stat-number{font-family:"Manrope",sans-serif;font-size:20px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.stat-label{font-size:12px;color:var(--muted);font-family:"JetBrains Mono",monospace}
+
+/* === THERMOFORM FOCUS SECTION === */
+.thermoform-section{background:var(--bg-elevated);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);overflow:hidden;transition:background .4s}
+.thermoform-visual{position:relative;margin:0 -28px 48px;height:320px;border-radius:0;overflow:hidden}
+#thermoform-canvas{width:100%;height:100%;display:block}
+.thermoform-overlay{position:absolute;inset:0;pointer-events:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:24px}
+.thermoform-label{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);background:var(--accent-dim);padding:4px 12px;border-radius:6px;border:1px solid var(--accent-dim);backdrop-filter:blur(8px);letter-spacing:1px}
+.tf-hud{position:absolute;top:12px;right:14px;display:flex;flex-direction:column;gap:5px;align-items:flex-end;z-index:2}
+.tf-hud-card{font-family:"JetBrains Mono",monospace;font-size:8px;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(217,164,65,.22);border-radius:5px;padding:4px 6px;backdrop-filter:blur(10px);min-width:58px;text-align:right;opacity:0;transform:translateX(6px);transition:opacity .4s,transform .4s}
+.tf-hud-card.visible{opacity:1;transform:translateX(0)}
+.tf-hud-card .tf-hud-val{font-size:10px;font-weight:700;font-family:"Manrope",sans-serif;color:var(--text);letter-spacing:-.3px}
+.tf-hud-card .tf-hud-unit{font-size:9px;color:var(--accent);margin-left:1px}
+.tf-hud-card .tf-hud-sub{font-size:7px;color:var(--muted);margin-top:1px;letter-spacing:.3px;text-transform:uppercase}
+.tf-hud-bar{height:2px;background:rgba(128,128,128,.15);border-radius:1px;margin-top:4px;overflow:hidden}
+.tf-hud-bar>i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#e85a3a);border-radius:1px;transition:width .15s linear}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}
+.process-grid::before{content:"";position:absolute;top:36px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--line),var(--accent-dim),var(--accent),var(--accent-dim),var(--line));z-index:0}
+.process-step{position:relative;z-index:1;text-align:center}
+.process-step-num{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:var(--card);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:"Manrope",sans-serif;font-size:24px;font-weight:700;color:var(--accent);transition:border-color .35s,transform .4s,box-shadow .35s,background .35s;position:relative}
+.process-step-num::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--accent-dim);opacity:0;transition:opacity .35s,transform .35s}
+.process-step:hover .process-step-num{border-color:var(--accent);background:var(--card-hover);transform:scale(1.08) translateY(-3px);box-shadow:0 12px 30px var(--accent-glow)}
+.process-step:hover .process-step-num::after{opacity:1;transform:scale(1.1)}
+.process-step h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.process-step p{font-size:12.5px;color:var(--soft);line-height:1.55;max-width:180px;margin:0 auto}
+.process-step-icon{font-size:28px;margin-bottom:8px;display:block;line-height:1}
+
+/* === TOOLS === */
 .tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.tool-chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 12px;text-align:center;transition:border-color .3s,transform .35s,background .3s}
-.tool-chip:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-4px)}
-.tool-chip strong{display:block;font-size:13px;font-weight:600;margin-bottom:3px}
-.tool-chip span{font-size:11px;color:var(--muted)}
+.tool-chip{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 14px;text-align:center;transition:border-color .3s,transform .35s,background .3s,box-shadow .35s}
+.tool-chip:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-4px);box-shadow:var(--shadow-card)}
+.tool-chip strong{display:block;font-size:13.5px;font-weight:600;margin-bottom:3px}
+.tool-chip span{font-size:11px;color:var(--muted);font-family:"JetBrains Mono",monospace}
+
+/* === SKILLS === */
 .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.skill-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;transition:border-color .35s,transform .45s,background .35s,box-shadow .35s;height:100%;position:relative;overflow:hidden}
-.skill-card::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--accent-dim),transparent 65%);opacity:0;transition:opacity .4s}
+.skill-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;transition:border-color .35s,transform .45s cubic-bezier(.16,1,.3,1),background .35s,box-shadow .35s;height:100%;position:relative;overflow:hidden;transform-style:preserve-3d}
+.skill-card::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--accent-dim),transparent 65%);opacity:0;transition:opacity .4s;pointer-events:none}
 .skill-card:hover::after{opacity:1}
-.skill-card:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,.12)}
-.skill-icon{width:42px;height:42px;border-radius:11px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:17px;transition:transform .4s,background .3s;position:relative;z-index:1}
-.skill-card:hover .skill-icon{transform:scale(1.1) rotate(-5deg);background:rgba(217,164,65,.26)}
-.skill-card h3{font-size:15.5px;font-weight:600;margin-bottom:8px;position:relative;z-index:1}
+.skill-card:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-8px);box-shadow:var(--shadow-hover)}
+.skill-icon{width:44px;height:44px;border-radius:12px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:18px;transition:transform .4s,background .3s;position:relative;z-index:1}
+.skill-card:hover .skill-icon{transform:scale(1.12) rotate(-5deg);background:rgba(217,164,65,.22)}
+.skill-card h3{font-size:16px;font-weight:600;margin-bottom:8px;position:relative;z-index:1}
 .skill-card p{color:var(--soft);font-size:13px;line-height:1.65;position:relative;z-index:1}
-.skill-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;position:relative;z-index:1}
-.skill-tags span{font-size:10.5px;font-weight:500;color:var(--accent);background:var(--accent-dim);padding:3px 8px;border-radius:5px}
-.industry-section{background:var(--bg-elevated);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);transition:background .35s}
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;position:relative;z-index:1}
+.skill-tags span{font-size:10.5px;font-weight:500;color:var(--accent);background:var(--accent-dim);padding:3px 9px;border-radius:5px;font-family:"JetBrains Mono",monospace}
+.value-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+.value-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px 18px;transition:border-color .3s,transform .35s,background .35s}
+.value-item:hover{border-color:rgba(217,164,65,.4);transform:translateY(-3px)}
+.value-num{font-family:"Manrope",sans-serif;font-size:15px;font-weight:700;color:var(--accent);min-width:28px;padding-top:1px}
+.value-item h4{font-size:14.5px;font-weight:600;margin-bottom:4px}
+.value-item p{font-size:12.5px;color:var(--soft);line-height:1.55}
+
+/* === INDUSTRIES === */
+.industry-section{background:var(--bg-elevated);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);transition:background .4s}
 .industry-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
-.industry-card{grid-column:span 2;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px 18px;transition:border-color .35s,transform .4s,box-shadow .35s,background .35s}
+.industry-card{grid-column:span 2;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:24px 20px;transition:border-color .35s,transform .4s,box-shadow .35s,background .35s;position:relative;overflow:hidden}
 .industry-card:nth-child(4),.industry-card:nth-child(5){grid-column:span 3}
-.industry-card:hover{border-color:var(--accent);transform:translateY(-5px) scale(1.01);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.industry-card:hover{border-color:var(--accent);transform:translateY(-5px) scale(1.01);box-shadow:var(--shadow-hover)}
 .industry-card h3{font-size:15px;font-weight:600;margin-bottom:7px;transition:color .25s}
+.industry-icon{display:block;font-size:26px;line-height:1;margin-bottom:12px;filter:grayscale(.15)}
 .industry-card:hover h3{color:var(--accent)}
 .industry-card p{color:var(--soft);font-size:13px;line-height:1.6}
-.value-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
-.value-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 16px;transition:border-color .3s,transform .35s,background .35s}
-.value-item:hover{border-color:rgba(217,164,65,.4);transform:translateY(-3px)}
-.value-num{font-family:"Space Grotesk",sans-serif;font-size:14px;font-weight:700;color:var(--accent);min-width:26px;padding-top:1px}
-.value-item h4{font-size:14px;font-weight:600;margin-bottom:3px}
-.value-item p{font-size:12.5px;color:var(--soft);line-height:1.55}
-footer{padding:32px 0;border-top:1px solid var(--line-soft);color:var(--muted);font-size:12.5px;text-align:center;position:relative;z-index:1}
-@media(max-width:960px){.tools-grid{grid-template-columns:repeat(2,1fr)}.skills-grid{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr;gap:36px}.industry-grid{grid-template-columns:1fr 1fr}.industry-card,.industry-card:nth-child(4),.industry-card:nth-child(5){grid-column:span 1}.value-grid{grid-template-columns:1fr}}
-@media(max-width:700px){.nav-links{display:none}.menu-btn{display:flex}.industry-grid{grid-template-columns:1fr}.about-stats{grid-template-columns:1fr 1fr}.tools-grid{grid-template-columns:1fr 1fr}h1{letter-spacing:-1px}section{padding:72px 0}.hero{padding:100px 0 60px;min-height:auto}.container{padding:0 20px}#webgl-bg{opacity:.45}[data-theme="light"] #webgl-bg{opacity:.35}}
+.industry-card::before{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.industry-card:hover::before{transform:scaleX(1)}
+
+/* === CTA === */
+.cta-section{text-align:center;padding:100px 0 120px}
+.cta-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:60px 40px;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
+.cta-box::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--accent-dim),transparent 60%);opacity:.8;pointer-events:none}
+.cta-box h2{position:relative;z-index:1;margin-bottom:12px}
+.cta-box p{position:relative;z-index:1;color:var(--soft);font-size:15.5px;max-width:480px;margin:0 auto 28px;line-height:1.65}
+
+/* === FOOTER === */
+footer{padding:36px 0;border-top:1px solid var(--line-soft);color:var(--muted);font-size:12.5px;text-align:center;position:relative;z-index:1}
+.footer-content{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.footer-links{display:flex;gap:16px}
+.footer-links a{color:var(--muted);transition:color .25s}
+.footer-links a:hover{color:var(--accent)}
+
+/* === RESPONSIVE === */
+@media(max-width:1200px){}
+@media(max-width:1000px){.tools-grid{grid-template-columns:repeat(2,1fr)}.skills-grid{grid-template-columns:1fr 1fr}.about-grid{grid-template-columns:1fr;gap:36px}.industry-grid{grid-template-columns:1fr 1fr}.industry-card,.industry-card:nth-child(4),.industry-card:nth-child(5){grid-column:span 1}.value-grid{grid-template-columns:1fr}.process-grid{grid-template-columns:repeat(2,1fr)}.process-grid::before{display:none}.hero-stats{flex-wrap:wrap}}
+@media(max-width:700px){.nav-links{display:none}.menu-btn{display:flex}.industry-grid{grid-template-columns:1fr}.about-stats{grid-template-columns:1fr 1fr}.tools-grid{grid-template-columns:1fr 1fr}.skills-grid{grid-template-columns:1fr}h1{letter-spacing:-1px}section{padding:72px 0}.hero{padding:100px 0 60px;min-height:auto}.container{padding:0 20px}#webgl-bg{opacity:.4}[data-theme="light"] #webgl-bg{opacity:.3}.blueprint-grid{opacity:.3}.thermoform-visual{height:220px}.process-grid{grid-template-columns:1fr}.cta-box{padding:40px 24px}.footer-content{flex-direction:column;text-align:center}}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}.reveal,.reveal-scale{opacity:1 !important;transform:none !important}}
 </style>
 </head>
-<body data-theme="dark">
+<body data-theme="light">
 <div class="progress-bar" id="progressBar"></div>
 <canvas id="webgl-bg"></canvas>
+<div class="blueprint-grid"></div>
 
 <header id="header">
   <div class="container">
     <nav>
-      <a href="#" class="logo">HAKAN AVCI<span>.</span></a>
+      <div class="nav-left">
+        <button class="theme-toggle" id="themeToggle" data-theme-val="light" aria-label="Theme toggle">
+          <div class="theme-toggle-knob">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#0a0c0e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f6f5f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          </div>
+        </button>
+        <span class="site-title">HAKAN AVCI</span>
+      </div>
       <div class="nav-right">
         <div class="nav-links">
+          <a href="#thermoform" data-i18n="nav_thermo">Thermoform</a>
           <a href="#about" data-i18n="nav_about">Über mich</a>
           <a href="#tools" data-i18n="nav_tools">Software</a>
           <a href="#skills" data-i18n="nav_skills">Kompetenzen</a>
           <a href="#industry" data-i18n="nav_industry">Branchen</a>
         </div>
-        <div class="theme-switch" role="group" aria-label="Theme">
-          <button class="theme-btn active" data-theme-set="dark" title="Dark">🌙</button>
-          <button class="theme-btn" data-theme-set="light" title="Light">☀️</button>
-        </div>
         <div class="lang-switch" role="group" aria-label="Language">
-          <button class="lang-btn active" data-lang="de" title="Deutsch">🇩🇪</button>
-          <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
-          <button class="lang-btn" data-lang="tr" title="Türkçe">🇹🇷</button>
+          <button class="lang-btn active" data-lang="de" title="Deutsch" aria-label="Deutsch">🇩🇪</button>
+          <button class="lang-btn" data-lang="en" title="English" aria-label="English">🇬🇧</button>
+          <button class="lang-btn" data-lang="tr" title="Türkçe" aria-label="Türkçe">🇹🇷</button>
         </div>
         <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
@@ -159,14 +269,17 @@ footer{padding:32px 0;border-top:1px solid var(--line-soft);color:var(--muted);f
 </header>
 
 <div class="mobile-nav" id="mobileNav">
+  <a href="#thermoform" onclick="closeMenu()" data-i18n="nav_thermo">Thermoform</a>
   <a href="#about" onclick="closeMenu()" data-i18n="nav_about">Über mich</a>
   <a href="#tools" onclick="closeMenu()" data-i18n="nav_tools">Software</a>
   <a href="#skills" onclick="closeMenu()" data-i18n="nav_skills">Kompetenzen</a>
   <a href="#industry" onclick="closeMenu()" data-i18n="nav_industry">Branchen</a>
   <div class="mobile-controls">
-    <div class="theme-switch">
-      <button class="theme-btn active" data-theme-set="dark" title="Dark">🌙</button>
-      <button class="theme-btn" data-theme-set="light" title="Light">☀️</button>
+    <div class="theme-toggle" id="themeToggleMobile" data-theme-val="light" aria-label="Theme toggle">
+      <div class="theme-toggle-knob">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#0a0c0e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f6f5f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </div>
     </div>
     <div class="lang-switch">
       <button class="lang-btn active" data-lang="de">🇩🇪</button>
@@ -176,158 +289,1468 @@ footer{padding:32px 0;border-top:1px solid var(--line-soft);color:var(--muted);f
   </div>
 </div>
 
+<!-- HERO -->
 <section class="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="tag"><span class="tag-dot"></span><span data-i18n="tag">Design- und Produktentwicklungsingenieur</span></div>
+      <div class="tag"><span class="tag-dot"></span><span data-i18n="tag">Design & Produktentwicklung</span></div>
       <h1>
-        <span class="h1-line" data-i18n="h1_1">Produktdesign</span>
-        <span class="h1-line" data-i18n="h1_2">und Entwicklung</span>
+        <span class="h1-line"><span class="h1-line-inner" data-i18n="h1_1">Designorientierte</span></span>
+        <span class="h1-line"><span class="h1-line-inner" data-i18n="h1_2">Produktentwicklung</span></span>
       </h1>
-      <p class="hero-desc" data-i18n="hero_desc">CATIA-basiertes Design von Kunststoffkomponenten, Thermoform- und Trim-Lösungen. Produktentwicklung für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.</p>
-      <div class="hero-actions">
-        <a href="#about" class="btn btn-primary" data-i18n="btn_profile">Profil ansehen</a>
-        <a href="#skills" class="btn btn-ghost" data-i18n="btn_skills">Kompetenzen</a>
+      <p class="hero-desc" data-i18n="hero_desc">CATIA-basierte Entwicklung von Kunststoffkomponenten — von Konzept und Design bis zur Serienreife, mit Schwerpunkt auf Thermoform- und Trim-Lösungen für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- THERMOFORM FOCUS SECTION -->
+<section id="thermoform" class="thermoform-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-i18n="tf_label">01 — Fokus</span>
+      <h2 data-i18n="tf_title">Design & Produktentwicklung</h2>
+      <p class="section-intro" data-i18n="tf_intro">Thermoformgerechte Auslegung von Innen- und Außen-Trim-Komponenten: Ziehtiefe, Wandstärke, Werkzeugabstimmung und Serientauglichkeit — alles in CATIA konzipiert.</p>
+    </div>
+    <div class="thermoform-visual reveal-scale">
+      <canvas id="thermoform-canvas"></canvas>
+      <div class="tf-hud">
+        <div class="tf-hud-card" id="tfTempCard">
+          <div><span class="tf-hud-val" id="tfTempVal">20</span><span class="tf-hud-unit">°C</span></div>
+          <div class="tf-hud-sub" data-i18n="tf_temp">Folientemperatur</div>
+          <div class="tf-hud-bar"><i id="tfTempBar"></i></div>
+        </div>
+        <div class="tf-hud-card" id="tfVacCard">
+          <div><span class="tf-hud-val" id="tfVacVal">0</span><span class="tf-hud-unit">%</span></div>
+          <div class="tf-hud-sub" data-i18n="tf_vac">Vakuum</div>
+          <div class="tf-hud-bar"><i id="tfVacBar" style="background:linear-gradient(90deg,#4a90d9,var(--accent))"></i></div>
+        </div>
+      </div>
+      <div class="thermoform-overlay">
+        <span class="thermoform-label" data-i18n="tf_viz">Live: Thermoform-Prozesssimulation</span>
+      </div>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal-scale">
+        <div class="process-step-num"><span class="process-step-icon">📐</span></div>
+        <h3 data-i18n="ps1_t">CAD-Konzept</h3>
+        <p data-i18n="ps1_p">Flächenmodellierung und Baugruppenauslegung in CATIA. Erste Geometrie und Ziehtiefenanalyse.</p>
+      </div>
+      <div class="process-step reveal-scale" style="transition-delay:.1s">
+        <div class="process-step-num"><span class="process-step-icon">🔥</span></div>
+        <h3 data-i18n="ps2_t">Thermoform-Auslegung</h3>
+        <p data-i18n="ps2_p">Wandstärkenverteilung, Ziehverhalten, Radien und Schrägen fertigungsgerecht definieren.</p>
+      </div>
+      <div class="process-step reveal-scale" style="transition-delay:.2s">
+        <div class="process-step-num"><span class="process-step-icon">🔧</span></div>
+        <h3 data-i18n="ps3_t">Werkzeugabstimmung</h3>
+        <p data-i18n="ps3_p">Koordination mit Werkzeugbau. Toleranzen, Werkzeugstandzeit und Prozessgrenzen klären.</p>
+      </div>
+      <div class="process-step reveal-scale" style="transition-delay:.3s">
+        <div class="process-step-num"><span class="process-step-icon">✅</span></div>
+        <h3 data-i18n="ps4_t">Serienvorbereitung</h3>
+        <p data-i18n="ps4_p">Prototyp-Optimierung, Freigabezyklen, BOM-Pflege und Übergabe in die Serie.</p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ABOUT -->
 <section id="about">
   <div class="container">
-    <div class="reveal"><span class="section-label" data-i18n="s1_label">01 — Profil</span><h2 data-i18n="s1_title">Über mich</h2></div>
+    <div class="reveal"><span class="section-label" data-i18n="s1_label">02 — Profil</span><h2 data-i18n="s1_title">Über mich</h2></div>
     <div class="about-grid">
-      <div class="about-text reveal reveal-delay-1">
-        <p data-i18n="about_p1">Hallo, ich bin Hakan Avcı. Als Ingenieur im Bereich Design und Produktentwicklung arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.</p>
-        <p data-i18n="about_p2">Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung und Produktoptimierung.</p>
+      <div class="about-text reveal">
+        <p data-i18n="about_p1">Hallo, ich bin Hakan Avcı. Als <strong>Ingenieur im Bereich Design und Produktentwicklung</strong> arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.</p>
+        <p data-i18n="about_p2">Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: <strong>Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung</strong> und Produktoptimierung.</p>
         <p data-i18n="about_p3">In meiner Arbeit verbinde ich Funktionalität, Fertigungstauglichkeit (DFM), Kosten, Qualität und Montagefreundlichkeit zu umsetzbaren Engineering-Lösungen.</p>
       </div>
       <div class="about-stats">
-        <div class="stat-card reveal-scale reveal-delay-1"><div class="stat-number">CATIA</div><div class="stat-label" data-i18n="stat1">3D-Design & Flächen</div></div>
-        <div class="stat-card reveal-scale reveal-delay-2"><div class="stat-number">Thermoform</div><div class="stat-label" data-i18n="stat2">Fertigungsorientiert</div></div>
-        <div class="stat-card reveal-scale reveal-delay-3"><div class="stat-number">DFM / DFA</div><div class="stat-label" data-i18n="stat3">Fertigungsanalyse</div></div>
-        <div class="stat-card reveal-scale reveal-delay-4"><div class="stat-number">Trim</div><div class="stat-label" data-i18n="stat4">Innen- & Außenbauteile</div></div>
+        <div class="stat-card reveal-scale"><div class="stat-number">CATIA</div><div class="stat-label" data-i18n="stat1">3D-Design & Flächen</div></div>
+        <div class="stat-card reveal-scale" style="transition-delay:.1s"><div class="stat-number" data-i18n="stat2n">Thermoform</div><div class="stat-label" data-i18n="stat2">Fertigungsorientiert</div></div>
+        <div class="stat-card reveal-scale" style="transition-delay:.2s"><div class="stat-number">DFM / DFA</div><div class="stat-label" data-i18n="stat3">Fertigungsanalyse</div></div>
+        <div class="stat-card reveal-scale" style="transition-delay:.3s"><div class="stat-number" data-i18n="stat4n">Trim</div><div class="stat-label" data-i18n="stat4">Innen- & Außenbauteile</div></div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- TOOLS -->
 <section id="tools">
   <div class="container">
     <div class="reveal">
-      <span class="section-label" data-i18n="s2_label">02 — Tools</span>
+      <span class="section-label" data-i18n="s2_label">03 — Tools</span>
       <h2 data-i18n="s2_title">Software & Umfeld</h2>
       <p class="section-intro" data-i18n="s2_intro">CAD-, PLM- und Engineering-Werkzeuge, die in der Produktentwicklung gefragt sind.</p>
     </div>
     <div class="tools-grid">
-      <div class="tool-chip reveal-scale reveal-delay-1"><strong>CATIA V5 / V6</strong><span data-i18n="tool1">Part · Surface · Assembly</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-2"><strong>3DEXPERIENCE</strong><span data-i18n="tool2">Plattform & Kollaboration</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-3"><strong>Solid / Surface</strong><span data-i18n="tool3">Volumen- & Flächenmodell</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-4"><strong>Drafting</strong><span data-i18n="tool4">2D-Zeichnungen</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-1"><strong>GD&T</strong><span data-i18n="tool5">Toleranzen & Maßketten</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-2"><strong>PLM</strong><span data-i18n="tool6">ENOVIA / Datenmanagement</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-3"><strong>BOM</strong><span data-i18n="tool7">Stückliste & Revision</span></div>
-      <div class="tool-chip reveal-scale reveal-delay-4"><strong>MS Office</strong><span data-i18n="tool8">Bericht · Angebot · Präsentation</span></div>
+      <div class="tool-chip reveal-scale"><strong>CATIA V5 / V6</strong><span data-i18n="tool1">Part · Surface · Assembly</span></div>
+      <div class="tool-chip reveal-scale" style="transition-delay:.05s"><strong>3DEXPERIENCE</strong><span data-i18n="tool2">Plattform & Kollaboration</span></div>
+      <div class="tool-chip reveal-scale" style="transition-delay:.1s"><strong>Solid / Surface</strong><span data-i18n="tool3">Volumen- & Flächenmodell</span></div>
+      <div class="tool-chip reveal-scale" style="transition-delay:.15s"><strong>Drafting</strong><span data-i18n="tool4">2D-Zeichnungen</span></div>
+      <div class="tool-chip reveal-scale"><strong>GD&T</strong><span data-i18n="tool5">Toleranzen & Maßketten</span></div>
+      <div class="tool-chip reveal-scale" style="transition-delay:.05s"><strong>PLM</strong><span data-i18n="tool6">ENOVIA / Datenmanagement</span></div>
+      <div class="tool-chip reveal-scale" style="transition-delay:.1s"><strong>BOM</strong><span data-i18n="tool7">Stückliste & Revision</span></div>
+      <div class="tool-chip reveal-scale" style="transition-delay:.15s"><strong>MS Office</strong><span data-i18n="tool8">Bericht · Angebot · Präsentation</span></div>
     </div>
   </div>
 </section>
 
+<!-- SKILLS -->
 <section id="skills">
   <div class="container">
     <div class="reveal">
-      <span class="section-label" data-i18n="s3_label">03 — Erfahrung</span>
+      <span class="section-label" data-i18n="s3_label">04 — Erfahrung</span>
       <h2 data-i18n="s3_title">Kompetenzen</h2>
       <p class="section-intro" data-i18n="s3_intro">Kompetenzen, die Unternehmen in der Produktentwicklung für Kunststoff und Trim suchen.</p>
     </div>
     <div class="skills-grid">
-      <div class="skill-card reveal-scale reveal-delay-1">
+      <div class="skill-card reveal-scale">
         <div class="skill-icon">◈</div>
         <h3 data-i18n="sk1_t">3D-Design mit CATIA</h3>
         <p data-i18n="sk1_p">Volumen- und Flächenmodellierung, Baugruppen, Zeichnungen und Revisionsmanagement. Serientaugliche Teile und Unterbaugruppen.</p>
         <div class="skill-tags"><span>Part Design</span><span>Generative Shape</span><span>Assembly</span></div>
       </div>
-      <div class="skill-card reveal-scale reveal-delay-2">
+      <div class="skill-card reveal-scale" style="transition-delay:.1s">
         <div class="skill-icon">⬡</div>
         <h3 data-i18n="sk2_t">Thermoform & Trim</h3>
         <p data-i18n="sk2_p">Innen- und Außen-Trim-Komponenten thermoformgerecht auslegen: Ziehtiefe, Wandstärke und Werkzeugabstimmung.</p>
         <div class="skill-tags"><span>Thermoforming</span><span>Interior Trim</span><span>Exterior Trim</span></div>
       </div>
-      <div class="skill-card reveal-scale reveal-delay-3">
+      <div class="skill-card reveal-scale" style="transition-delay:.2s">
         <div class="skill-icon">◎</div>
         <h3 data-i18n="sk3_t">Kunststoffkomponenten</h3>
         <p data-i18n="sk3_p">Kunststoffteil-Design, Werkstoffwahl, Wandstärke, Versteifungsrippen, Verbindungselemente und Montage-Schnittstellen.</p>
         <div class="skill-tags"><span>Plastic Design</span><span>Ribs & Bosses</span><span>Fastening</span></div>
       </div>
-      <div class="skill-card reveal-scale reveal-delay-1">
+      <div class="skill-card reveal-scale">
         <div class="skill-icon">◇</div>
         <h3 data-i18n="sk4_t">DFM / DFA</h3>
         <p data-i18n="sk4_p">Fertigungs- und montagegerechte Auslegung. Kosten, Werkzeugstandzeit, Toleranzketten und Serienrisiken reduzieren.</p>
         <div class="skill-tags"><span>DFM</span><span>DFA</span><span>Cost Down</span></div>
       </div>
-      <div class="skill-card reveal-scale reveal-delay-2">
+      <div class="skill-card reveal-scale" style="transition-delay:.1s">
         <div class="skill-icon">▣</div>
         <h3 data-i18n="sk5_t">Produktentwicklungsprozess</h3>
         <p data-i18n="sk5_p">Angebot und Machbarkeit, Kostenbewertung, Prozessentwicklung, Prototyp-Optimierung und Serienvorbereitung.</p>
         <div class="skill-tags"><span>Feasibility</span><span>APQP</span><span>Change Mgmt</span></div>
       </div>
-      <div class="skill-card reveal-scale reveal-delay-3">
+      <div class="skill-card reveal-scale" style="transition-delay:.2s">
         <div class="skill-icon">⬡</div>
         <h3 data-i18n="sk6_t">Schnittstellenarbeit</h3>
         <p data-i18n="sk6_p">Abstimmung mit Werkzeugbau, Produktion, Qualität, Einkauf und Kunde. Lastenheft, Revision und Freigabeprozesse.</p>
         <div class="skill-tags"><span>Tooling</span><span>Quality</span><span>Customer</span></div>
       </div>
     </div>
-    <div class="reveal" style="margin-top:52px">
+    <div class="reveal" style="margin-top:56px">
       <span class="section-label" data-i18n="focus_label">Fokus</span>
-      <h2 style="font-size:clamp(20px,2.8vw,26px);margin-bottom:18px" data-i18n="focus_title">Was Unternehmen priorisieren</h2>
+      <h2 style="font-size:clamp(22px,3vw,28px);margin-bottom:20px" data-i18n="focus_title">Was Unternehmen priorisieren</h2>
     </div>
     <div class="value-grid">
-      <div class="value-item reveal-scale reveal-delay-1"><div class="value-num">01</div><div><h4 data-i18n="v1_t">Fertigungsgerechtes Design</h4><p data-i18n="v1_p">Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.</p></div></div>
-      <div class="value-item reveal-scale reveal-delay-2"><div class="value-num">02</div><div><h4 data-i18n="v2_t">Revision & Datendisziplin</h4><p data-i18n="v2_p">Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.</p></div></div>
-      <div class="value-item reveal-scale reveal-delay-3"><div class="value-num">03</div><div><h4 data-i18n="v3_t">Kunde & Werkzeugbau</h4><p data-i18n="v3_p">Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.</p></div></div>
-      <div class="value-item reveal-scale reveal-delay-4"><div class="value-num">04</div><div><h4 data-i18n="v4_t">Kosten- und Termintreue</h4><p data-i18n="v4_p">Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.</p></div></div>
+      <div class="value-item reveal-scale"><div class="value-num">01</div><div><h4 data-i18n="v1_t">Fertigungsgerechtes Design</h4><p data-i18n="v1_p">Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.</p></div></div>
+      <div class="value-item reveal-scale" style="transition-delay:.1s"><div class="value-num">02</div><div><h4 data-i18n="v2_t">Revision & Datendisziplin</h4><p data-i18n="v2_p">Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.</p></div></div>
+      <div class="value-item reveal-scale" style="transition-delay:.2s"><div class="value-num">03</div><div><h4 data-i18n="v3_t">Kunde & Werkzeugbau</h4><p data-i18n="v3_p">Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.</p></div></div>
+      <div class="value-item reveal-scale" style="transition-delay:.3s"><div class="value-num">04</div><div><h4 data-i18n="v4_t">Kosten- und Termintreue</h4><p data-i18n="v4_p">Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.</p></div></div>
     </div>
   </div>
 </section>
 
+<!-- INDUSTRIES -->
 <section id="industry" class="industry-section">
   <div class="container">
     <div class="reveal">
-      <span class="section-label" data-i18n="s4_label">04 — Branchen</span>
+      <span class="section-label" data-i18n="s4_label">05 — Branchen</span>
       <h2 data-i18n="s4_title">Einsatzfelder</h2>
       <p class="section-intro" data-i18n="s4_intro">Branchen mit hohem Bedarf an Kunststoff- und Trim-Lösungen.</p>
     </div>
     <div class="industry-grid">
-      <div class="industry-card reveal-scale reveal-delay-1"><h3 data-i18n="ind1_t">Automotive</h3><p data-i18n="ind1_p">Innen- und Außen-Trim sowie Kunststoffteile für Pkw.</p></div>
-      <div class="industry-card reveal-scale reveal-delay-2"><h3 data-i18n="ind2_t">Nutzfahrzeuge</h3><p data-i18n="ind2_p">Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.</p></div>
-      <div class="industry-card reveal-scale reveal-delay-3"><h3 data-i18n="ind3_t">Baumaschinen</h3><p data-i18n="ind3_p">Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.</p></div>
-      <div class="industry-card reveal-scale reveal-delay-1"><h3 data-i18n="ind4_t">Landmaschinen</h3><p data-i18n="ind4_p">Kabinenkomponenten für Traktoren und Landtechnik.</p></div>
-      <div class="industry-card reveal-scale reveal-delay-2"><h3 data-i18n="ind5_t">Industrieanwendungen</h3><p data-i18n="ind5_p">Kunststoffkomponenten für weitere industrielle Einsatzfelder.</p></div>
+      <div class="industry-card reveal-scale"><span class="industry-icon">🚗</span><h3 data-i18n="ind1_t">Automotive</h3><p data-i18n="ind1_p">Innen- und Außen-Trim sowie Kunststoffteile für Pkw.</p></div>
+      <div class="industry-card reveal-scale" style="transition-delay:.1s"><span class="industry-icon">🚛</span><h3 data-i18n="ind2_t">Nutzfahrzeuge</h3><p data-i18n="ind2_p">Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.</p></div>
+      <div class="industry-card reveal-scale" style="transition-delay:.2s"><span class="industry-icon">🏗️</span><h3 data-i18n="ind3_t">Baumaschinen</h3><p data-i18n="ind3_p">Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.</p></div>
+      <div class="industry-card reveal-scale"><span class="industry-icon">🚜</span><h3 data-i18n="ind4_t">Landmaschinen</h3><p data-i18n="ind4_p">Kabinenkomponenten für Traktoren und Landtechnik.</p></div>
+      <div class="industry-card reveal-scale" style="transition-delay:.1s"><span class="industry-icon">⚙️</span><h3 data-i18n="ind5_t">Industrieanwendungen</h3><p data-i18n="ind5_p">Kunststoffkomponenten für weitere industrielle Einsatzfelder.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box reveal-scale">
+      <h2 data-i18n="cta_title">Bereit für Ihre nächste Produktentwicklung?</h2>
+      <p data-i18n="cta_desc">Vom Konzept bis zur Serie — Lösungen, die Design, Fertigung und Qualität verbinden.</p>
+      <a href="mailto:info@avcihakan.com" class="btn btn-primary" data-i18n="cta_btn">Kontakt aufnehmen
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="container" data-i18n="footer">© 2026 Hakan Avcı — Design- und Produktentwicklungsingenieur</div>
+  <div class="container">
+    <div class="footer-content">
+      <span data-i18n="footer">© 2026 Hakan Avcı — Design & Produktentwicklung</span>
+      <div class="footer-links">
+        <a href="#thermoform" data-i18n="nav_thermo">Thermoform</a>
+        <a href="#about" data-i18n="nav_about">Über mich</a>
+        <a href="#skills" data-i18n="nav_skills">Kompetenzen</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-const I18N={de:{nav_about:"Über mich",nav_tools:"Software",nav_skills:"Kompetenzen",nav_industry:"Branchen",tag:"Design- und Produktentwicklungsingenieur",h1_1:"Produktdesign",h1_2:"und Entwicklung",hero_desc:"CATIA-basiertes Design von Kunststoffkomponenten, Thermoform- und Trim-Lösungen. Produktentwicklung für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.",btn_profile:"Profil ansehen",btn_skills:"Kompetenzen",s1_label:"01 — Profil",s1_title:"Über mich",about_p1:"Hallo, ich bin Hakan Avcı. Als Ingenieur im Bereich Design und Produktentwicklung arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.",about_p2:"Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung und Produktoptimierung.",about_p3:"In meiner Arbeit verbinde ich Funktionalität, Fertigungstauglichkeit (DFM), Kosten, Qualität und Montagefreundlichkeit zu umsetzbaren Engineering-Lösungen.",stat1:"3D-Design & Flächen",stat2:"Fertigungsorientiert",stat3:"Fertigungsanalyse",stat4:"Innen- & Außenbauteile",s2_label:"02 — Tools",s2_title:"Software & Umfeld",s2_intro:"CAD-, PLM- und Engineering-Werkzeuge, die in der Produktentwicklung gefragt sind.",tool1:"Part · Surface · Assembly",tool2:"Plattform & Kollaboration",tool3:"Volumen- & Flächenmodell",tool4:"2D-Zeichnungen",tool5:"Toleranzen & Maßketten",tool6:"ENOVIA / Datenmanagement",tool7:"Stückliste & Revision",tool8:"Bericht · Angebot · Präsentation",s3_label:"03 — Erfahrung",s3_title:"Kompetenzen",s3_intro:"Kompetenzen, die Unternehmen in der Produktentwicklung für Kunststoff und Trim suchen.",sk1_t:"3D-Design mit CATIA",sk1_p:"Volumen- und Flächenmodellierung, Baugruppen, Zeichnungen und Revisionsmanagement. Serientaugliche Teile und Unterbaugruppen.",sk2_t:"Thermoform & Trim",sk2_p:"Innen- und Außen-Trim-Komponenten thermoformgerecht auslegen: Ziehtiefe, Wandstärke und Werkzeugabstimmung.",sk3_t:"Kunststoffkomponenten",sk3_p:"Kunststoffteil-Design, Werkstoffwahl, Wandstärke, Versteifungsrippen, Verbindungselemente und Montage-Schnittstellen.",sk4_t:"DFM / DFA",sk4_p:"Fertigungs- und montagegerechte Auslegung. Kosten, Werkzeugstandzeit, Toleranzketten und Serienrisiken reduzieren.",sk5_t:"Produktentwicklungsprozess",sk5_p:"Angebot und Machbarkeit, Kostenbewertung, Prozessentwicklung, Prototyp-Optimierung und Serienvorbereitung.",sk6_t:"Schnittstellenarbeit",sk6_p:"Abstimmung mit Werkzeugbau, Produktion, Qualität, Einkauf und Kunde. Lastenheft, Revision und Freigabeprozesse.",focus_label:"Fokus",focus_title:"Was Unternehmen priorisieren",v1_t:"Fertigungsgerechtes Design",v1_p:"Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.",v2_t:"Revision & Datendisziplin",v2_p:"Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.",v3_t:"Kunde & Werkzeugbau",v3_p:"Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.",v4_t:"Kosten- und Termintreue",v4_p:"Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.",s4_label:"04 — Branchen",s4_title:"Einsatzfelder",s4_intro:"Branchen mit hohem Bedarf an Kunststoff- und Trim-Lösungen.",ind1_t:"Automotive",ind1_p:"Innen- und Außen-Trim sowie Kunststoffteile für Pkw.",ind2_t:"Nutzfahrzeuge",ind2_p:"Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.",ind3_t:"Baumaschinen",ind3_p:"Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.",ind4_t:"Landmaschinen",ind4_p:"Kabinenkomponenten für Traktoren und Landtechnik.",ind5_t:"Industrieanwendungen",ind5_p:"Kunststoffkomponenten für weitere industrielle Einsatzfelder.",footer:"© 2026 Hakan Avcı — Design- und Produktentwicklungsingenieur"},en:{nav_about:"About",nav_tools:"Software",nav_skills:"Skills",nav_industry:"Industries",tag:"Design & Product Development Engineer",h1_1:"Product Design",h1_2:"and Development",hero_desc:"CATIA-based design of plastic components, thermoforming and trim solutions. Product development for automotive, commercial vehicles, construction and agricultural machinery.",btn_profile:"View profile",btn_skills:"Skills",s1_label:"01 — Profile",s1_title:"About me",about_p1:"Hello, I am Hakan Avcı. As a design and product development engineer, I work on plastic component development, manufacturability assessments and preparation for series production.",about_p2:"Focus areas include automotive, commercial vehicles, construction and agricultural machinery: interior and exterior trim parts, thermoform-ready development and product improvement.",about_p3:"In my work I balance functionality, manufacturability (DFM), cost, quality and ease of assembly to deliver practical engineering solutions.",stat1:"3D design & surfaces",stat2:"Production-oriented",stat3:"Manufacturability",stat4:"Interior & exterior",s2_label:"02 — Tools",s2_title:"Software & environment",s2_intro:"CAD, PLM and engineering tools commonly required in product development.",tool1:"Part · Surface · Assembly",tool2:"Platform & collaboration",tool3:"Solid & surface modeling",tool4:"2D drawings",tool5:"Tolerances & stacks",tool6:"ENOVIA / data management",tool7:"BOM & revision",tool8:"Reports · quotes · decks",s3_label:"03 — Experience",s3_title:"Skills",s3_intro:"Capabilities companies look for in plastic and trim product development.",sk1_t:"3D design with CATIA",sk1_p:"Solid and surface modeling, assemblies, drawings and revision control. Series-ready parts and sub-assemblies.",sk2_t:"Thermoform & trim",sk2_p:"Interior and exterior trim designed for thermoforming: draw depth, wall thickness and tool coordination.",sk3_t:"Plastic components",sk3_p:"Plastic part design, material selection, wall thickness, ribs, fastening features and assembly interfaces.",sk4_t:"DFM / DFA",sk4_p:"Design for manufacturing and assembly. Reduce cost, tooling risk, tolerance stack-up and series issues.",sk5_t:"Product development process",sk5_p:"Quotes and feasibility, cost evaluation, process development, post-prototype improvement and series readiness.",sk6_t:"Cross-functional work",sk6_p:"Coordination with tooling, production, quality, purchasing and the customer. Specs, revisions and release cycles.",focus_label:"Focus",focus_title:"What companies prioritize",v1_t:"Manufacturable design",v1_p:"Solutions aligned with tooling and process limits, cost and quality targets.",v2_t:"Revision & data discipline",v2_p:"Clear revision control in PLM, up-to-date BOM and change management.",v3_t:"Customer & tooling",v3_p:"Technical specs, approval loops and clear communication with toolmakers.",v4_t:"Cost and schedule focus",v4_p:"Cost- and schedule-aware approach from quotation through series production.",s4_label:"04 — Industries",s4_title:"Application areas",s4_intro:"Sectors with strong demand for plastic and trim solutions.",ind1_t:"Automotive",ind1_p:"Interior and exterior trim and plastic parts for passenger cars.",ind2_t:"Commercial vehicles",ind2_p:"Cabin components, functional plastic parts and production-ready design.",ind3_t:"Construction machinery",ind3_p:"Interior/exterior trim and durable plastic solutions for heavy equipment.",ind4_t:"Agricultural machinery",ind4_p:"Cabin components for tractors and agricultural equipment.",ind5_t:"Industrial applications",ind5_p:"Plastic components adapted for further industrial use cases.",footer:"© 2026 Hakan Avcı — Design & Product Development Engineer"},tr:{nav_about:"Hakkımda",nav_tools:"Yazılımlar",nav_skills:"Yetkinlikler",nav_industry:"Sektörler",tag:"Tasarım ve Ürün Geliştirme Mühendisi",h1_1:"Ürün Tasarımı",h1_2:"ve Geliştirme",hero_desc:"CATIA ile plastik komponent, termoform ve trim tasarımı. Otomotiv, ticari araç, iş ve tarım makineleri için ürün geliştirme.",btn_profile:"Profili İncele",btn_skills:"Yetkinlikler",s1_label:"01 — Profil",s1_title:"Hakkımda",about_p1:"Merhaba, ben Hakan Avcı. Tasarım ve ürün geliştirme alanında çalışan bir mühendis olarak plastik komponentlerin geliştirilmesi, üretilebilirlik değerlendirmeleri ve seri üretime hazırlık süreçlerinde görev almaktayım.",about_p2:"Özellikle otomotiv, ticari araç, iş makinesi ve tarım makineleri sektörlerinde iç ve dış trim parçalarının tasarımı, termoform üretim yöntemine uygun geliştirme çalışmaları ve ürün iyileştirme süreçleri üzerine deneyim sahibiyim.",about_p3:"Çalışmalarımda fonksiyonellik, üretilebilirlik (DFM), maliyet, kalite ve montaj kolaylığını birlikte ele alarak uygulanabilir mühendislik çözümleri geliştirmeye odaklanıyorum.",stat1:"3D tasarım & yüzey",stat2:"Üretim odaklı tasarım",stat3:"Üretilebilirlik analizi",stat4:"İç & dış komponentler",s2_label:"02 — Araçlar",s2_title:"Yazılımlar & Ortam",s2_intro:"Ürün geliştirme süreçlerinde aranan CAD, PLM ve mühendislik araçları.",tool1:"Part · Surface · Assembly",tool2:"Platform & işbirliği",tool3:"Katı & yüzey modelleme",tool4:"2D teknik resim",tool5:"Tolerans & ölçü zinciri",tool6:"ENOVIA / veri yönetimi",tool7:"Parça listesi & revizyon",tool8:"Rapor · teklif · sunum",s3_label:"03 — Deneyim",s3_title:"Yetkinlikler",s3_intro:"Otomotiv ve endüstriyel ekipman şirketlerinin aradığı ürün geliştirme yetkinlikleri.",sk1_t:"CATIA ile 3D Tasarım",sk1_p:"Katı ve yüzey modelleme, montaj tasarımı, teknik resim ve revizyon yönetimi. Seri üretime uygun parça ve alt gruplar.",sk2_t:"Termoform & Trim",sk2_p:"İç ve dış trim komponentlerinin termoform üretim yöntemine uygun tasarımı, çekme payı, kalınlık ve kalıp koordinasyonu.",sk3_t:"Plastik Komponent",sk3_p:"Plastik parça tasarımı, malzeme seçimi, et kalınlığı, nervür, bağlama elemanları ve montaj arayüzleri.",sk4_t:"DFM / DFA",sk4_p:"Üretilebilirlik ve montaj kolaylığı analizi. Maliyet, kalıp ömrü, tolerans yığılması ve seri üretim risklerinin azaltılması.",sk5_t:"Ürün Geliştirme Süreci",sk5_p:"Teklif ve fizibilite, maliyet değerlendirme, proses geliştirme, prototip sonrası iyileştirme ve seri üretim desteği.",sk6_t:"Çapraz Fonksiyonel Çalışma",sk6_p:"Kalıp, üretim, kalite, satın alma ve müşteri ekipleriyle koordinasyon. Teknik şartname, revizyon ve onay süreçleri.",focus_label:"Odak",focus_title:"Şirketlerin önem verdiği maddeler",v1_t:"Üretilebilir tasarım",v1_p:"Kalıp ve proses kısıtlarına uygun, maliyet ve kalite hedeflerini dengeleyen çözümler.",v2_t:"Revizyon & veri disiplini",v2_p:"PLM ortamında net revizyon takibi, BOM güncelliği ve değişiklik yönetimi.",v3_t:"Müşteri ve kalıp koordinasyonu",v3_p:"Teknik şartname, onay döngüsü ve kalıp firmasıyla net iletişim.",v4_t:"Maliyet ve süre bilinci",v4_p:"Teklif aşamasından seri üretime kadar maliyet ve termin odaklı yaklaşım.",s4_label:"04 — Sektörler",s4_title:"Çalışma Alanları",s4_intro:"Plastik ve trim çözümlerinin yoğun kullanıldığı endüstriyel alanlar.",ind1_t:"Otomotiv",ind1_p:"Binek araç iç ve dış trim komponentleri ve plastik parça geliştirme.",ind2_t:"Ticari Araçlar",ind2_p:"Kabin içi komponentler, fonksiyonel plastik parçalar ve üretime yönelik tasarım.",ind3_t:"İş Makineleri",ind3_p:"Ağır ekipman kabinleri için iç/dış trim ve dayanıklı plastik çözümler.",ind4_t:"Tarım Makineleri",ind4_p:"Traktör ve tarım makineleri kabin komponentleri için tasarım.",ind5_t:"Endüstriyel Uygulamalar",ind5_p:"Farklı sektörlerde plastik komponentlerin tasarım ve üretime entegrasyonu.",footer:"© 2026 Hakan Avcı — Tasarım ve Ürün Geliştirme Mühendisi"}};
+/* ===== I18N TRANSLATIONS ===== */
+const I18N={
+de:{
+nav_thermo:"Thermoform",nav_about:"Über mich",nav_tools:"Software",nav_skills:"Kompetenzen",nav_industry:"Branchen",
+tag:"Design & Produktentwicklung",
+h1_1:"Designorientierte",h1_2:"Produktentwicklung",
+hero_desc:"CATIA-basierte Entwicklung von Kunststoffkomponenten — von Konzept und Design bis zur Serienreife, mit Schwerpunkt auf Thermoform- und Trim-Lösungen für Automotive, Nutzfahrzeuge, Bau- und Landmaschinen.",
+btn_thermo:"Thermoform-Fokus",btn_skills:"Kompetenzen",
+hs1:"V5 / V6 / 3DX",hs2:"Thermoform",hs2l:"DFM-orientiert",hs3:"Trim",hs3l:"Innen & Außen",
+tf_label:"01 — Fokus",tf_title:"Design & Produktentwicklung",
+tf_intro:"Thermoformgerechte Auslegung von Innen- und Außen-Trim-Komponenten: Ziehtiefe, Wandstärke, Werkzeugabstimmung und Serientauglichkeit — alles in CATIA konzipiert.",
+tf_viz:"Live: Thermoform-Prozesssimulation",
+ps1_t:"CAD-Konzept",ps1_p:"Flächenmodellierung und Baugruppenauslegung in CATIA. Erste Geometrie und Ziehtiefenanalyse.",
+ps2_t:"Thermoform-Auslegung",ps2_p:"Wandstärkenverteilung, Ziehverhalten, Radien und Schrägen fertigungsgerecht definieren.",
+ps3_t:"Werkzeugabstimmung",ps3_p:"Koordination mit Werkzeugbau. Toleranzen, Werkzeugstandzeit und Prozessgrenzen klären.",
+ps4_t:"Serienvorbereitung",ps4_p:"Prototyp-Optimierung, Freigabezyklen, BOM-Pflege und Übergabe in die Serie.",
+s1_label:"02 — Profil",s1_title:"Über mich",
+about_p1:"Hallo, ich bin Hakan Avcı. Als Ingenieur im Bereich Design und Produktentwicklung arbeite ich an der Entwicklung von Kunststoffkomponenten, an Fertigungstauglichkeitsbewertungen und an der Vorbereitung für die Serienproduktion.",
+about_p2:"Schwerpunkte liegen in den Branchen Automotive, Nutzfahrzeuge, Bau- und Landmaschinen: Innen- und Außen-Trim-Teile, thermoformgerechte Entwicklung und Produktoptimierung.",
+about_p3:"In meiner Arbeit verbinde ich Funktionalität, Fertigungstauglichkeit (DFM), Kosten, Qualität und Montagefreundlichkeit zu umsetzbaren Engineering-Lösungen.",
+stat1:"3D-Design & Flächen",stat2n:"Thermoform",stat2:"Fertigungsorientiert",stat3:"Fertigungsanalyse",stat4n:"Trim",stat4:"Innen- & Außenbauteile",
+s2_label:"03 — Tools",s2_title:"Software & Umfeld",s2_intro:"CAD-, PLM- und Engineering-Werkzeuge, die in der Produktentwicklung gefragt sind.",
+tool1:"Part · Surface · Assembly",tool2:"Plattform & Kollaboration",tool3:"Volumen- & Flächenmodell",tool4:"2D-Zeichnungen",tool5:"Toleranzen & Maßketten",tool6:"ENOVIA / Datenmanagement",tool7:"Stückliste & Revision",tool8:"Bericht · Angebot · Präsentation",
+s3_label:"04 — Erfahrung",s3_title:"Kompetenzen",s3_intro:"Kompetenzen, die Unternehmen in der Produktentwicklung für Kunststoff und Trim suchen.",
+sk1_t:"3D-Design mit CATIA",sk1_p:"Volumen- und Flächenmodellierung, Baugruppen, Zeichnungen und Revisionsmanagement. Serientaugliche Teile und Unterbaugruppen.",
+sk2_t:"Thermoform & Trim",sk2_p:"Innen- und Außen-Trim-Komponenten thermoformgerecht auslegen: Ziehtiefe, Wandstärke und Werkzeugabstimmung.",
+sk3_t:"Kunststoffkomponenten",sk3_p:"Kunststoffteil-Design, Werkstoffwahl, Wandstärke, Versteifungsrippen, Verbindungselemente und Montage-Schnittstellen.",
+sk4_t:"DFM / DFA",sk4_p:"Fertigungs- und montagegerechte Auslegung. Kosten, Werkzeugstandzeit, Toleranzketten und Serienrisiken reduzieren.",
+sk5_t:"Produktentwicklungsprozess",sk5_p:"Angebot und Machbarkeit, Kostenbewertung, Prozessentwicklung, Prototyp-Optimierung und Serienvorbereitung.",
+sk6_t:"Schnittstellenarbeit",sk6_p:"Abstimmung mit Werkzeugbau, Produktion, Qualität, Einkauf und Kunde. Lastenheft, Revision und Freigabeprozesse.",
+focus_label:"Fokus",focus_title:"Was Unternehmen priorisieren",
+v1_t:"Fertigungsgerechtes Design",v1_p:"Lösungen im Einklang mit Werkzeug- und Prozessgrenzen, Kosten und Qualität.",
+v2_t:"Revision & Datendisziplin",v2_p:"Klare Revisionsführung im PLM, aktuelle BOM und Change-Management.",
+v3_t:"Kunde & Werkzeugbau",v3_p:"Lastenheft, Freigabezyklen und klare Kommunikation mit dem Werkzeuglieferanten.",
+v4_t:"Kosten- und Termintreue",v4_p:"Kosten- und terminorientiertes Denken von der Angebotserstellung bis zur Serie.",
+s4_label:"05 — Branchen",s4_title:"Einsatzfelder",s4_intro:"Branchen mit hohem Bedarf an Kunststoff- und Trim-Lösungen.",
+ind1_t:"Automotive",ind1_p:"Innen- und Außen-Trim sowie Kunststoffteile für Pkw.",
+ind2_t:"Nutzfahrzeuge",ind2_p:"Kabinenkomponenten, funktionale Kunststoffteile und seriennahes Design.",
+ind3_t:"Baumaschinen",ind3_p:"Innen-/Außen-Trim und robuste Kunststofflösungen für schwere Maschinen.",
+ind4_t:"Landmaschinen",ind4_p:"Kabinenkomponenten für Traktoren und Landtechnik.",
+ind5_t:"Industrieanwendungen",ind5_p:"Kunststoffkomponenten für weitere industrielle Einsatzfelder.",
+cta_title:"Bereit für Ihre nächste Produktentwicklung?",cta_desc:"Vom Konzept bis zur Serie — Lösungen, die Design, Fertigung und Qualität verbinden.",
+cta_btn:"Kontakt aufnehmen",
+tf_temp:"Folientemperatur",tf_vac:"Vakuum",
+footer:"© 2026 Hakan Avcı — Design & Produktentwicklung"
+},
+en:{
+nav_thermo:"Thermoform",nav_about:"About",nav_tools:"Software",nav_skills:"Skills",nav_industry:"Industries",
+tag:"Design & Product Development",
+h1_1:"Design Driven",h1_2:"Product Development",
+hero_desc:"CATIA-based development of plastic components — from concept and design to series readiness, with a focus on thermoforming and trim solutions for automotive, commercial vehicles, construction and agricultural machinery.",
+btn_thermo:"Thermoform Focus",btn_skills:"Skills",
+hs1:"V5 / V6 / 3DX",hs2:"Thermoform",hs2l:"DFM-oriented",hs3:"Trim",hs3l:"Interior & Exterior",
+tf_label:"01 — Focus",tf_title:"Design & Product Development",
+tf_intro:"Thermoform-ready design of interior and exterior trim components: draw depth, wall thickness, tool coordination and series readiness — all conceived in CATIA.",
+tf_viz:"Live: Thermoform process simulation",
+ps1_t:"CAD Concept",ps1_p:"Surface modeling and assembly design in CATIA. Initial geometry and draw depth analysis.",
+ps2_t:"Thermoform Design",ps2_p:"Wall thickness distribution, draw behavior, radii and draft angles defined for manufacturing.",
+ps3_t:"Tool Coordination",ps3_p:"Coordination with tooling. Tolerances, tool life and process limits clarified.",
+ps4_t:"Series Preparation",ps4_p:"Prototype optimization, release cycles, BOM maintenance and handover to production.",
+s1_label:"02 — Profile",s1_title:"About me",
+about_p1:"Hello, I am Hakan Avcı. As a design and product development engineer, I work on plastic component development, manufacturability assessments and preparation for series production.",
+about_p2:"Focus areas include automotive, commercial vehicles, construction and agricultural machinery: interior and exterior trim parts, thermoform-ready development and product improvement.",
+about_p3:"In my work I balance functionality, manufacturability (DFM), cost, quality and ease of assembly to deliver practical engineering solutions.",
+stat1:"3D design & surfaces",stat2n:"Thermoform",stat2:"Production-oriented",stat3:"Manufacturability",stat4n:"Trim",stat4:"Interior & exterior",
+s2_label:"03 — Tools",s2_title:"Software & environment",s2_intro:"CAD, PLM and engineering tools commonly required in product development.",
+tool1:"Part · Surface · Assembly",tool2:"Platform & collaboration",tool3:"Solid & surface modeling",tool4:"2D drawings",tool5:"Tolerances & stacks",tool6:"ENOVIA / data management",tool7:"BOM & revision",tool8:"Reports · quotes · decks",
+s3_label:"04 — Experience",s3_title:"Skills",s3_intro:"Capabilities companies look for in plastic and trim product development.",
+sk1_t:"3D design with CATIA",sk1_p:"Solid and surface modeling, assemblies, drawings and revision control. Series-ready parts and sub-assemblies.",
+sk2_t:"Thermoform & trim",sk2_p:"Interior and exterior trim designed for thermoforming: draw depth, wall thickness and tool coordination.",
+sk3_t:"Plastic components",sk3_p:"Plastic part design, material selection, wall thickness, ribs, fastening features and assembly interfaces.",
+sk4_t:"DFM / DFA",sk4_p:"Design for manufacturing and assembly. Reduce cost, tooling risk, tolerance stack-up and series issues.",
+sk5_t:"Product development process",sk5_p:"Quotes and feasibility, cost evaluation, process development, post-prototype improvement and series readiness.",
+sk6_t:"Cross-functional work",sk6_p:"Coordination with tooling, production, quality, purchasing and the customer. Specs, revisions and release cycles.",
+focus_label:"Focus",focus_title:"What companies prioritize",
+v1_t:"Manufacturable design",v1_p:"Solutions aligned with tooling and process limits, cost and quality targets.",
+v2_t:"Revision & data discipline",v2_p:"Clear revision control in PLM, up-to-date BOM and change management.",
+v3_t:"Customer & tooling",v3_p:"Technical specs, approval loops and clear communication with toolmakers.",
+v4_t:"Cost and schedule focus",v4_p:"Cost- and schedule-aware approach from quotation through series production.",
+s4_label:"05 — Industries",s4_title:"Application areas",s4_intro:"Sectors with strong demand for plastic and trim solutions.",
+ind1_t:"Automotive",ind1_p:"Interior and exterior trim and plastic parts for passenger cars.",
+ind2_t:"Commercial vehicles",ind2_p:"Cabin components, functional plastic parts and production-ready design.",
+ind3_t:"Construction machinery",ind3_p:"Interior/exterior trim and durable plastic solutions for heavy equipment.",
+ind4_t:"Agricultural machinery",ind4_p:"Cabin components for tractors and agricultural equipment.",
+ind5_t:"Industrial applications",ind5_p:"Plastic components adapted for further industrial use cases.",
+cta_title:"Ready for your next product development project?",cta_desc:"From concept to series production — solutions that connect design, manufacturing and quality.",
+cta_btn:"Get in touch",
+tf_temp:"Sheet temperature",tf_vac:"Vacuum",
+footer:"© 2026 Hakan Avcı — Design & Product Development"
+},
+tr:{
+nav_thermo:"Termoform",nav_about:"Hakkımda",nav_tools:"Yazılımlar",nav_skills:"Yetkinlikler",nav_industry:"Sektörler",
+tag:"Tasarım & Ürün Geliştirme",
+h1_1:"Tasarım Odaklı",h1_2:"Ürün Geliştirme",
+hero_desc:"CATIA ile plastik komponent geliştirme — konsept ve tasarımdan seri üretime, otomotiv, ticari araç, iş ve tarım makineleri için termoform ve trim çözümlerinde uzmanlaşarak.",
+btn_thermo:"Termoform Odak",btn_skills:"Yetkinlikler",
+hs1:"V5 / V6 / 3DX",hs2:"Termoform",hs2l:"DFM odaklı",hs3:"Trim",hs3l:"İç & Dış",
+tf_label:"01 — Odak",tf_title:"Tasarım & Ürün Geliştirme",
+tf_intro:"İç ve dış trim komponentlerinin termoforma uygun tasarımı: çekme derinliği, et kalınlığı, kalıp koordinasyonu ve seri üretime uygunluk — hepsi CATIA'da tasarlanır.",
+tf_viz:"Canlı: Termoform süreç simülasyonu",
+ps1_t:"CAD Konsept",ps1_p:"CATIA'da yüzey modelleme ve montaj tasarımı. İlk geometri ve çekme derinliği analizi.",
+ps2_t:"Termoform Tasarımı",ps2_p:"Et kalınlığı dağılımı, çekme davranışı, radylar ve eğimler üretim için tanımlanır.",
+ps3_t:"Kalıp Koordinasyonu",ps3_p:"Kalıp firmasıyla koordinasyon. Toleranslar, kalıp ömrü ve proses sınırları netleştirilir.",
+ps4_t:"Seri Hazırlığı",ps4_p:"Prototip iyileştirme, onay döngüleri, BOM bakımı ve üretime devir.",
+s1_label:"02 — Profil",s1_title:"Hakkımda",
+about_p1:"Merhaba, ben Hakan Avcı. Tasarım ve ürün geliştirme alanında çalışan bir mühendis olarak plastik komponentlerin geliştirilmesi, üretilebilirlik değerlendirmeleri ve seri üretime hazırlık süreçlerinde görev almaktayım.",
+about_p2:"Özellikle otomotiv, ticari araç, iş makinesi ve tarım makineleri sektörlerinde iç ve dış trim parçalarının tasarımı, termoform üretim yöntemine uygun geliştirme çalışmaları ve ürün iyileştirme süreçleri üzerine deneyim sahibiyim.",
+about_p3:"Çalışmalarımda fonksiyonellik, üretilebilirlik (DFM), maliyet, kalite ve montaj kolaylığını birlikte ele alarak uygulanabilir mühendislik çözümleri geliştirmeye odaklanıyorum.",
+stat1:"3D tasarım & yüzey",stat2n:"Termoform",stat2:"Üretim odaklı",stat3:"Üretilebilirlik analizi",stat4n:"Trim",stat4:"İç & dış komponentler",
+s2_label:"03 — Araçlar",s2_title:"Yazılımlar & Ortam",s2_intro:"Ürün geliştirme süreçlerinde aranan CAD, PLM ve mühendislik araçları.",
+tool1:"Part · Surface · Assembly",tool2:"Platform & işbirliği",tool3:"Katı & yüzey modelleme",tool4:"2D teknik resim",tool5:"Tolerans & ölçü zinciri",tool6:"ENOVIA / veri yönetimi",tool7:"Parça listesi & revizyon",tool8:"Rapor · teklif · sunum",
+s3_label:"04 — Deneyim",s3_title:"Yetkinlikler",s3_intro:"Otomotiv ve endüstriyel ekipman şirketlerinin aradığı ürün geliştirme yetkinlikleri.",
+sk1_t:"CATIA ile 3D Tasarım",sk1_p:"Katı ve yüzey modelleme, montaj tasarımı, teknik resim ve revizyon yönetimi. Seri üretime uygun parça ve alt gruplar.",
+sk2_t:"Termoform & Trim",sk2_p:"İç ve dış trim komponentlerinin termoform üretim yöntemine uygun tasarımı, çekme payı, kalınlık ve kalıp koordinasyonu.",
+sk3_t:"Plastik Komponent",sk3_p:"Plastik parça tasarımı, malzeme seçimi, et kalınlığı, nervür, bağlama elemanları ve montaj arayüzleri.",
+sk4_t:"DFM / DFA",sk4_p:"Üretilebilirlik ve montaj kolaylığı analizi. Maliyet, kalıp ömrü, tolerans yığılması ve seri üretim risklerinin azaltılması.",
+sk5_t:"Ürün Geliştirme Süreci",sk5_p:"Teklif ve fizibilite, maliyet değerlendirme, proses geliştirme, prototip sonrası iyileştirme ve seri üretim desteği.",
+sk6_t:"Çapraz Fonksiyonel Çalışma",sk6_p:"Kalıp, üretim, kalite, satın alma ve müşteri ekipleriyle koordinasyon. Teknik şartname, revizyon ve onay süreçleri.",
+focus_label:"Odak",focus_title:"Şirketlerin önem verdiği maddeler",
+v1_t:"Üretilebilir tasarım",v1_p:"Kalıp ve proses kısıtlarına uygun, maliyet ve kalite hedeflerini dengeleyen çözümler.",
+v2_t:"Revizyon & veri disiplini",v2_p:"PLM ortamında net revizyon takibi, BOM güncelliği ve değişiklik yönetimi.",
+v3_t:"Müşteri ve kalıp koordinasyonu",v3_p:"Teknik şartname, onay döngüsü ve kalıp firmasıyla net iletişim.",
+v4_t:"Maliyet ve süre bilinci",v4_p:"Teklif aşamasından seri üretime kadar maliyet ve termin odaklı yaklaşım.",
+s4_label:"05 — Sektörler",s4_title:"Çalışma Alanları",s4_intro:"Plastik ve trim çözümlerinin yoğun kullanıldığı endüstriyel alanlar.",
+ind1_t:"Otomotiv",ind1_p:"Binek araç iç ve dış trim komponentleri ve plastik parça geliştirme.",
+ind2_t:"Ticari Araçlar",ind2_p:"Kabin içi komponentler, fonksiyonel plastik parçalar ve üretime yönelik tasarım.",
+ind3_t:"İş Makineleri",ind3_p:"Ağır ekipman kabinleri için iç/dış trim ve dayanıklı plastik çözümler.",
+ind4_t:"Tarım Makineleri",ind4_p:"Traktör ve tarım makineleri kabin komponentleri için tasarım.",
+ind5_t:"Endüstriyel Uygulamalar",ind5_p:"Farklı sektörlerde plastik komponentlerin tasarım ve üretime entegrasyonu.",
+cta_title:"Bir sonraki ürün geliştirme projeniz için hazır mısınız?",cta_desc:"Konseptten seri üretime — tasarım, üretim ve kaliteyi birleştiren çözümler.",
+cta_btn:"İletişime geç",
+tf_temp:"Levha sıcaklığı",tf_vac:"Vakum",
+footer:"© 2026 Hakan Avcı — Tasarım & Ürün Geliştirme"
+}
+};
 
-function setLang(lang){if(!I18N[lang])return;document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(I18N[lang][k]!==undefined)el.textContent=I18N[lang][k]});document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===lang));const t={de:'Hakan Avcı | Design- und Produktentwicklungsingenieur',en:'Hakan Avcı | Design & Product Development Engineer',tr:'Hakan Avcı | Tasarım ve Ürün Geliştirme Mühendisi'};document.title=t[lang];localStorage.setItem('lang',lang)}
+function setLang(lang){
+  if(!I18N[lang])return;
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(I18N[lang][k]!==undefined)el.textContent=I18N[lang][k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang')===lang));
+  const t={de:'Hakan Avcı | Design & Produktentwicklung',en:'Hakan Avcı | Design & Product Development',tr:'Hakan Avcı | Tasarım & Ürün Geliştirme'};
+  document.title=t[lang];
+  var _s=window;try{_s._appLang=lang;}catch(e){}
+}
 document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.getAttribute('data-lang'))));
 
-function setTheme(theme){document.body.setAttribute('data-theme',theme);document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('active',b.getAttribute('data-theme-set')===theme));localStorage.setItem('theme',theme);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=theme==='dark'?'#0a0c0e':'#f5f4f0'}
-document.querySelectorAll('.theme-btn').forEach(b=>b.addEventListener('click',()=>setTheme(b.getAttribute('data-theme-set'))));
-(function(){const savedTheme=localStorage.getItem('theme')||'dark';const savedLang=localStorage.getItem('lang')||'de';setTheme(savedTheme);setLang(savedLang)})();
+function setTheme(theme){
+  document.body.setAttribute('data-theme',theme);
+  document.querySelectorAll('.theme-toggle').forEach(t=>t.setAttribute('data-theme-val',theme));
+  var _s=window;try{_s._appTheme=theme;}catch(e){}
+  var m=document.querySelector('meta[name="theme-color"]');
+  if(m)m.content=theme==='dark'?'#0a0c0e':'#f6f5f1';
+}
+document.querySelectorAll('.theme-toggle').forEach(t=>t.addEventListener('click',()=>{
+  const current=t.getAttribute('data-theme-val')||'dark';
+  setTheme(current==='dark'?'light':'dark');
+}));
 
-(function(){const canvas=document.getElementById('webgl-bg');if(!canvas||typeof THREE==='undefined'){console.warn('Three.js not loaded');return;}const isMobile=window.innerWidth<700;const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000);camera.position.set(0,0,9);const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});renderer.setSize(window.innerWidth,window.innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x000000,0);const group=new THREE.Group();scene.add(group);const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.35,0.38,isMobile?80:160,isMobile?8:16),new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.55}));group.add(knot);const ringMat=new THREE.MeshBasicMaterial({color:0xd9a441,transparent:true,opacity:0.32});const ring=new THREE.Mesh(new THREE.TorusGeometry(2.6,0.018,8,isMobile?48:96),ringMat);ring.rotation.x=Math.PI/2.4;group.add(ring);const ring2=ring.clone();ring2.rotation.x=Math.PI/3.2;ring2.rotation.y=0.55;ring2.material=ringMat.clone();ring2.material.opacity=0.2;group.add(ring2);group.add(new THREE.Mesh(new THREE.IcosahedronGeometry(3.15,1),new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.11})));const accents=[];const shapes=[new THREE.OctahedronGeometry(0.2,0),new THREE.TetrahedronGeometry(0.24,0),new THREE.BoxGeometry(0.26,0.26,0.26)];for(let i=0;i<(isMobile?6:12);i++){const m=new THREE.Mesh(shapes[i%3],new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.38}));const a=(i/12)*Math.PI*2,r=3.7+Math.random()*1.1;m.position.set(Math.cos(a)*r,(Math.random()-0.5)*2.8,Math.sin(a)*r*0.65);m.userData={speed:0.28+Math.random()*0.45,offset:Math.random()*Math.PI*2,baseY:m.position.y};group.add(m);accents.push(m)}const pCount=isMobile?180:480;const pPos=new Float32Array(pCount*3);for(let i=0;i<pCount;i++){pPos[i*3]=(Math.random()-0.5)*14;pPos[i*3+1]=(Math.random()-0.5)*10;pPos[i*3+2]=(Math.random()-0.5)*10}const pGeo=new THREE.BufferGeometry();pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));scene.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0xd9a441,size:isMobile?0.035:0.045,transparent:true,opacity:0.45,blending:THREE.AdditiveBlending,depthWrite:false})));let mouseX=0,mouseY=0,targetX=0,targetY=0;window.addEventListener('mousemove',e=>{mouseX=(e.clientX/window.innerWidth)*2-1;mouseY=-(e.clientY/window.innerHeight)*2+1});window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)});const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();knot.rotation.x=t*0.17;knot.rotation.y=t*0.26;accents.forEach(m=>{m.rotation.x+=0.01*m.userData.speed;m.rotation.y+=0.014*m.userData.speed;m.position.y=m.userData.baseY+Math.sin(t*m.userData.speed+m.userData.offset)*0.32});targetX+=(mouseX*1.15-targetX)*0.04;targetY+=(mouseY*0.75-targetY)*0.04;group.rotation.y=targetX*0.32;group.rotation.x=targetY*0.22;group.position.x=targetX*0.35;group.position.y=targetY*0.22;const base=document.body.getAttribute('data-theme')==='light'?0.55:0.92;canvas.style.opacity=Math.max(0.08,1-window.scrollY/(window.innerHeight*0.95))*(isMobile?base*0.55:base);renderer.render(scene,camera)}animate()})();
+(function(){
+  const savedTheme=window._appTheme||'light';
+  const savedLang=window._appLang||'de';
+  setTheme(savedTheme);setLang(savedLang);
+})();
 
-const progressBar=document.getElementById('progressBar');window.addEventListener('scroll',()=>{const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;progressBar.style.width=(h>0?(s/h)*100:0)+'%'});
-const header=document.getElementById('header');window.addEventListener('scroll',()=>header.classList.toggle('scrolled',window.scrollY>40));
-const menuBtn=document.getElementById('menuBtn'),mobileNav=document.getElementById('mobileNav');menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileNav.classList.toggle('open')});
+/* ===== MOBILE MENU ===== */
+const menuBtn=document.getElementById('menuBtn'),mobileNav=document.getElementById('mobileNav');
+menuBtn.addEventListener('click',()=>{menuBtn.classList.toggle('open');mobileNav.classList.toggle('open')});
 function closeMenu(){menuBtn.classList.remove('open');mobileNav.classList.remove('open')}
-const reveals=document.querySelectorAll('.reveal,.reveal-scale');const observer=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(el=>observer.observe(el));
+
+/* ===== HEADER & PROGRESS ===== */
+const progressBar=document.getElementById('progressBar');
+const header=document.getElementById('header');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;
+  progressBar.style.width=(h>0?(s/h)*100:0)+'%';
+  header.classList.toggle('scrolled',window.scrollY>40);
+});
+
+/* ===== GSAP SCROLL ANIMATIONS ===== */
+(function(){
+  if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined'){
+    // Fallback: show everything
+    document.querySelectorAll('.reveal,.reveal-scale').forEach(el=>{el.style.opacity=1;el.style.transform='none'});
+    return;
+  }
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Scroll reveals
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,duration:.8,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 85%',toggleActions:'play none none none'}
+    });
+  });
+
+  gsap.utils.toArray('.reveal-scale').forEach(el=>{
+    gsap.fromTo(el,{opacity:0,y:30,scale:.96},{opacity:1,y:0,scale:1,duration:.7,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}
+    });
+  });
+
+  // Parallax for section labels
+  gsap.utils.toArray('.section-label').forEach(el=>{
+    gsap.fromTo(el,{opacity:0,x:-20},{opacity:1,x:0,duration:.6,ease:'power2.out',
+      scrollTrigger:{trigger:el,start:'top 90%'}
+    });
+  });
+
+  // Thermoform visual parallax
+  ScrollTrigger.create({
+    trigger:'.thermoform-visual',
+    start:'top bottom',
+    end:'bottom top',
+    scrub:1,
+    onUpdate:self=>{
+      const thermoCanvas=document.getElementById('thermoform-canvas');
+      if(thermoCanvas&&window.thermoformScene){
+        window.thermoformScene.setProgress(self.progress);
+      }
+    }
+  });
+})();
+
+/* ===== MAIN WEBGL BACKGROUND — independent asymmetric abstract wireframes ===== */
+(function(){
+  const canvas=document.getElementById('webgl-bg');
+  if(!canvas||typeof THREE==='undefined')return;
+  const isMobile=window.innerWidth<700;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(38,window.innerWidth/window.innerHeight,0.1,80);
+  camera.position.set(2.8,2.2,10);
+  camera.lookAt(0,0.4,0);
+
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x000000,0);
+
+  const COL=0xd9a441;
+  function mat(op){return new THREE.MeshBasicMaterial({color:COL,wireframe:true,transparent:true,opacity:op==null?0.92:op});}
+
+  function surf(w,h,nu,nv,fn,op){
+    const geo=new THREE.PlaneGeometry(w,h,nu,nv);
+    const a=geo.attributes.position.array;
+    for(let i=0;i<a.length;i+=3){
+      const u=a[i]/(w*0.5), v=a[i+1]/(h*0.5);
+      a[i+2]=fn(u,v,a[i],a[i+1]);
+    }
+    geo.computeVertexNormals();
+    return new THREE.Mesh(geo, mat(op));
+  }
+
+  /* 1 — Twisted asymmetric ribbon */
+  function shapeRibbon(){
+    const g=new THREE.Group();
+    for(let k=0;k<5;k++){
+      const bias=k*0.35-0.7;
+      const rib=surf(5.2,0.55,40,6,(u,v,x,y)=>{
+        const twist=0.55*Math.sin(x*0.9+bias*2)+0.25*Math.cos(x*1.7-bias);
+        const taper=1-0.15*Math.abs(x)/2.6;
+        return (twist+0.2*y*Math.sin(x*1.3+bias))*(taper)+bias*0.15;
+      },0.75+k*0.04);
+      rib.rotation.x=-Math.PI/2+0.08*k;
+      rib.position.set(0.2*k,0.35*k,0.15*k);
+      rib.rotation.z=0.12*k-0.2;
+      g.add(rib);
+    }
+    return g;
+  }
+
+  /* 2 — Irregular lattice shell */
+  function shapeLattice(){
+    const g=new THREE.Group();
+    const shell=surf(4.5,4.5,28,28,(u,v,x,y)=>{
+      const r=Math.sqrt(x*x+y*y);
+      const ang=Math.atan2(y,x);
+      const bump=0.35*Math.sin(ang*3+r*1.2)+0.25*Math.cos(ang*5-r*0.8);
+      const asym=0.3*Math.exp(-Math.pow((x-0.8)/1.2,2))*Math.exp(-Math.pow((y+0.5)/1.5,2));
+      const bowl=0.9*(1-Math.min(1,r*r/6));
+      return bowl+bump+asym;
+    },0.95);
+    shell.rotation.x=-Math.PI/2.3;
+    shell.position.y=0.2;
+    g.add(shell);
+    // offset inner cut
+    const inner=surf(2.2,2.8,16,18,(u,v,x,y)=>{
+      return 0.4*Math.sin(x*2.1+y)+0.25*Math.cos(y*3.2-x*0.7)+0.15*x;
+    },0.70);
+    inner.rotation.x=-Math.PI/2.1;
+    inner.position.set(0.4,0.9,-0.2);
+    inner.rotation.z=0.25;
+    g.add(inner);
+    return g;
+  }
+
+  /* 3 — Spiral cascade (asymmetric) */
+  function shapeSpiral(){
+    const g=new THREE.Group();
+    for(let i=0;i<18;i++){
+      const t=i/18;
+      const ang=t*Math.PI*3.2;
+      const rad=0.4+t*2.4+(i%3)*0.12;
+      const y=t*2.8-0.4+(i%2)*0.15;
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(rad*0.35+0.15,0.025,5,28), mat(0.45+t*0.3));
+      ring.position.set(Math.cos(ang)*rad*0.55, y, Math.sin(ang)*rad*0.4);
+      ring.rotation.set(0.3+t*0.5, ang*0.4, 0.2*Math.sin(ang));
+      g.add(ring);
+    }
+    // crossing beam
+    const beam=surf(3.5,0.4,24,4,(u,v,x,y)=>0.15*Math.sin(x*2)+0.1*x,0.75);
+    beam.rotation.set(0.4,0.3,-0.5);
+    beam.position.set(-0.3,1.2,0.70);
+    g.add(beam);
+    return g;
+  }
+
+  /* 4 — Crumpled asymmetric plane */
+  function shapeCrumple(){
+    const g=new THREE.Group();
+    const p=surf(5,4,36,28,(u,v,x,y)=>{
+      const n1=0.45*Math.sin(x*1.8+y*0.7)+0.3*Math.cos(x*0.6-y*2.1);
+      const n2=0.25*Math.sin(x*3.2-y*1.4+1.5)+0.2*Math.cos(y*2.8+x);
+      const ridge=0.4*Math.exp(-Math.pow((x*0.7+y*0.5-0.3)/0.8,2));
+      const hole=-0.35*Math.exp(-Math.pow((x+1.2)/0.9,2)-Math.pow((y-0.8)/0.7,2));
+      return n1+n2+ridge+hole+0.08*x-0.05*y;
+    },0.90);
+    p.rotation.x=-Math.PI/2.4;
+    p.rotation.z=0.15;
+    p.position.set(0.2,0.5,0);
+    g.add(p);
+    const flap=surf(2,1.5,14,10,(u,v,x,y)=>0.2*Math.sin(x*3)+0.15*y*y,0.70);
+    flap.rotation.set(-1.0,0.4,0.80);
+    flap.position.set(-1.5,1.4,0.95);
+    g.add(flap);
+    return g;
+  }
+
+  /* 5 — Fractured angular construct */
+  function shapeFracture(){
+    const g=new THREE.Group();
+    const pieces=[
+      {w:2.8,h:2.2,nu:14,nv:12, pos:[0.3,0.8,0], rot:[-0.4,0.2,0.15], fn:(u,v,x,y)=>0.3*Math.abs(x)*Math.sin(y*2)+0.2*y},
+      {w:1.8,h:2.6,nu:10,nv:16, pos:[-1.4,1.0,0.4], rot:[-0.2,-0.5,0.4], fn:(u,v,x,y)=>0.25*Math.cos(x*2.5)+0.15*x*y},
+      {w:2.2,h:1.4,nu:12,nv:8, pos:[1.2,1.5,-0.3], rot:[-0.7,0.3,-0.2], fn:(u,v,x,y)=>0.2*Math.sin(x*4-y)+0.1*y},
+      {w:1.5,h:1.8,nu:8,nv:10, pos:[-0.5,0.3,0.8], rot:[-0.1,0.8,0.3], fn:(u,v,x,y)=>0.18*Math.sin(y*3)+0.12*x},
+      {w:2.0,h:1.2,nu:12,nv:8, pos:[0.8,0.2,0.6], rot:[-0.5,-0.3,0.6], fn:(u,v,x,y)=>0.22*Math.cos(x*2+y*2)},
+    ];
+    pieces.forEach(function(pc,i){
+      const m=surf(pc.w,pc.h,pc.nu,pc.nv,pc.fn,0.5+i*0.05);
+      m.position.set(pc.pos[0],pc.pos[1],pc.pos[2]);
+      m.rotation.set(pc.rot[0],pc.rot[1],pc.rot[2]);
+      g.add(m);
+    });
+    // thin connecting rods
+    for(let i=0;i<6;i++){
+      const rod=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,1.5+i*0.2,5), mat(0.4));
+      rod.position.set((i-2.5)*0.5, 0.9+i*0.15, (i%2)*0.5-0.2);
+      rod.rotation.set(0.5*i, 0.3, 1.1+i*0.2);
+      g.add(rod);
+    }
+    return g;
+  }
+
+  const forms=[shapeRibbon(),shapeLattice(),shapeSpiral(),shapeCrumple(),shapeFracture()];
+  const group=new THREE.Group();
+  forms.forEach(function(f,i){
+    f.visible=(i===0);
+    f.traverse(function(c){ if(c.isMesh&&c.material){ c.material=c.material.clone(); c.userData.baseOpacity=c.material.opacity; }});
+    group.add(f);
+  });
+  scene.add(group);
+
+  const ring=new THREE.Mesh(new THREE.RingGeometry(3.6,3.75,64),
+    new THREE.MeshBasicMaterial({color:COL,transparent:true,opacity:0.22,side:THREE.DoubleSide}));
+  ring.rotation.x=-Math.PI/2; ring.position.y=-0.3; scene.add(ring);
+
+  const pCount=isMobile?40:130;
+  const pPos=new Float32Array(pCount*3);
+  for(let i=0;i<pCount;i++){ pPos[i*3]=(Math.random()-0.5)*18; pPos[i*3+1]=Math.random()*6-0.5; pPos[i*3+2]=(Math.random()-0.5)*14; }
+  const pGeo=new THREE.BufferGeometry(); pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+  scene.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:COL,size:isMobile?0.02:0.028,transparent:true,opacity:0.35,blending:THREE.AdditiveBlending,depthWrite:false})));
+
+  let mouseX=0,mouseY=0,targetX=0,targetY=0;
+  if(!reduceMotion) window.addEventListener('mousemove',function(e){ mouseX=(e.clientX/window.innerWidth)*2-1; mouseY=-(e.clientY/window.innerHeight)*2+1; });
+  window.addEventListener('resize',function(){ camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); });
+
+  let idx=0, phase='hold', phaseT=0;
+  const HOLD=5.5, FADE=1.2;
+  function setOp(v,o){ v.traverse(function(c){ if(c.isMesh&&c.material&&c.material.opacity!==undefined) c.material.opacity=(c.userData.baseOpacity||0.7)*o; }); }
+
+  const clock=new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+
+    // Once scrolled a bit past the hero, this fixed full-screen canvas is
+    // already at floor opacity (near-invisible) for the rest of the page.
+    // Skip the per-vertex math and the GPU render entirely rather than
+    // paying that cost on every frame for the whole scroll depth of the site.
+    const scrollFrac=window.scrollY/(window.innerHeight*0.95);
+    const offscreen=scrollFrac>=1;
+    if(document.hidden||offscreen){
+      const base=document.body.getAttribute('data-theme')==='light'?0.62:0.95;
+      canvas.style.opacity=0.08*(isMobile?base*0.8:base);
+      clock.getDelta(); // keep clock in sync so motion doesn't jump on return
+      return;
+    }
+
+    const dt=clock.getDelta(), t=clock.getElapsedTime();
+    if(!reduceMotion){
+      phaseT+=dt;
+      if(phase==='hold'&&phaseT>=HOLD){phase='out';phaseT=0;}
+      else if(phase==='out'&&phaseT>=FADE){ forms[idx].visible=false; idx=(idx+1)%forms.length; forms[idx].visible=true; setOp(forms[idx],0); phase='in';phaseT=0; }
+      else if(phase==='in'&&phaseT>=FADE){ phase='hold';phaseT=0; setOp(forms[idx],1); }
+      if(phase==='out') setOp(forms[idx],1-Math.min(1,phaseT/FADE));
+      else if(phase==='in') setOp(forms[idx],Math.min(1,phaseT/FADE));
+      group.rotation.y=t*0.09+targetX*0.32;
+      group.rotation.x=0.08+targetY*0.12;
+      group.position.y=Math.sin(t*0.35)*0.08;
+      targetX+=(mouseX*0.8-targetX)*0.03; targetY+=(mouseY*0.5-targetY)*0.03;
+      ring.rotation.z=t*0.04;
+    }
+    const base=document.body.getAttribute('data-theme')==='light'?0.62:0.95;
+    canvas.style.opacity=Math.max(0.08,1-scrollFrac)*(isMobile?base*0.8:base);
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* ===== THERMOFORM PROCESS VISUALIZATION (Section canvas) ===== */
+(function(){
+  const canvas=document.getElementById('thermoform-canvas');
+  if(!canvas||typeof THREE==='undefined')return;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function resize(){
+    const w=canvas.clientWidth,h=canvas.clientHeight;
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;camera.updateProjectionMatrix();
+  }
+
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(50,1,0.1,100);
+  camera.position.set(2.6,4.6,5.2);
+  camera.lookAt(0,0.25,0);
+
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setClearColor(0x000000,0);
+
+  // === MOLD (bottom shape - a raised form with curves) ===
+  const moldGroup=new THREE.Group();
+
+  // Mold base
+  const moldBase=new THREE.Mesh(
+    new THREE.BoxGeometry(4,0.3,2.5),
+    new THREE.MeshBasicMaterial({color:0x2a3038,transparent:true,opacity:0.6})
+  );
+  moldBase.position.y=-0.15;
+  moldGroup.add(moldBase);
+
+  // === "HA" MOLD SURFACE ===
+  // The mold is modeled as a set of rounded ridges (capsule-shaped strokes)
+  // that spell "HA" — the same height-field function is used to build the
+  // visible mold mesh below AND to drape the sheet over it later, so the
+  // sheet always conforms to exactly what's rendered (no mismatch).
+  const haStrokes=[
+    // H — left vertical, right vertical, crossbar
+    {a:[-1.32,-0.82],b:[-1.32,0.82],r:0.2,h:1.15},
+    {a:[-0.52,-0.82],b:[-0.52,0.82],r:0.2,h:1.15},
+    {a:[-1.32,0.02],b:[-0.52,0.02],r:0.17,h:0.95},
+    // A — left leg, right leg, crossbar
+    {a:[0.48,0.82],b:[0.88,-0.82],r:0.2,h:1.15},
+    {a:[1.28,0.82],b:[0.88,-0.82],r:0.2,h:1.15},
+    {a:[0.66,0.22],b:[1.10,0.22],r:0.16,h:0.9},
+  ];
+
+  function moldHeightAt(x,z){
+    let maxH=0;
+    for(let s=0;s<haStrokes.length;s++){
+      const st=haStrokes[s];
+      const ax=st.a[0],az=st.a[1],bx=st.b[0],bz=st.b[1];
+      const abx=bx-ax,abz=bz-az;
+      const abLen2=abx*abx+abz*abz;
+      let t=abLen2>0?((x-ax)*abx+(z-az)*abz)/abLen2:0;
+      if(t<0)t=0;else if(t>1)t=1;
+      const px=ax+abx*t,pz=az+abz*t;
+      const dx=x-px,dz=z-pz;
+      const d=Math.sqrt(dx*dx+dz*dz);
+      if(d<st.r){
+        // Cosine falloff → smoother draw radius (less sharp than hemisphere)
+        const u=d/st.r;
+        const hgt=st.h*0.5*(1+Math.cos(Math.PI*u));
+        if(hgt>maxH)maxH=hgt;
+      }
+    }
+    return maxH;
+  }
+  // Same local-plane -> world-footprint mapping used by the sheet below
+  // (PlaneGeometry rotated -90deg about X maps local (x,y) -> world (x,-y)).
+  function footprintXZ(ox,oy){ return [ox,-oy]; }
+
+  const moldSeg=72;
+  const moldGeom=new THREE.PlaneGeometry(3.6,2.3,moldSeg,Math.round(moldSeg*0.64));
+  {
+    const p=moldGeom.attributes.position.array;
+    for(let i=0;i<p.length;i+=3){
+      const [fx,fz]=footprintXZ(p[i],p[i+1]);
+      p[i+2]=moldHeightAt(fx,fz);
+    }
+    moldGeom.computeVertexNormals();
+  }
+  const moldMat=new THREE.MeshBasicMaterial({color:0x1e2530,transparent:true,opacity:0.75,side:THREE.DoubleSide});
+  const moldSurface=new THREE.Mesh(moldGeom,moldMat);
+  moldSurface.rotation.x=-Math.PI/2;
+  moldGroup.add(moldSurface);
+
+  // Mold wireframe overlay — a cool blue-grey, deliberately different from
+  // the sheet's warm gold, so the mold and the draped sheet stay visually
+  // distinct instead of blending into one another once the sheet lands.
+  const moldSurfaceWire=new THREE.Mesh(
+    moldGeom,
+    new THREE.MeshBasicMaterial({color:0x7fa8c9,wireframe:true,transparent:true,opacity:0.45})
+  );
+  moldSurfaceWire.rotation.x=-Math.PI/2;
+  moldGroup.add(moldSurfaceWire);
+
+  const moldBaseWire=new THREE.Mesh(
+    new THREE.BoxGeometry(4,0.3,2.5),
+    new THREE.MeshBasicMaterial({color:0x7fa8c9,wireframe:true,transparent:true,opacity:0.15})
+  );
+  moldBaseWire.position.y=-0.15;
+  moldGroup.add(moldBaseWire);
+
+  scene.add(moldGroup);
+
+  // === THERMOFORM SHEET (deformable plastic sheet) ===
+  const sheetSeg=80;
+  const sheetGeom=new THREE.PlaneGeometry(4.5,3,sheetSeg,Math.round(sheetSeg*0.66));
+  const sheetMat=new THREE.MeshBasicMaterial({color:0xd9a441,wireframe:true,transparent:true,opacity:0.88,side:THREE.DoubleSide});
+  const sheet=new THREE.Mesh(sheetGeom,sheetMat);
+  sheet.rotation.x=-Math.PI/2;
+  sheet.position.y=2.0;
+  scene.add(sheet);
+
+  // Sheet fill (semi-transparent surface)
+  const sheetFillMat=new THREE.MeshBasicMaterial({color:0xd9a441,transparent:true,opacity:0.14,side:THREE.DoubleSide});
+  const sheetFill=new THREE.Mesh(sheetGeom,sheetFillMat);
+  sheetFill.rotation.x=-Math.PI/2;
+  sheetFill.position.y=2.0;
+  scene.add(sheetFill);
+
+  const origPos=sheetGeom.attributes.position.array.slice();
+
+  // === GUIDE RAILS ===
+  const railMat=new THREE.LineBasicMaterial({color:0xd9a441,transparent:true,opacity:0.12});
+  for(let i=-1;i<=1;i+=2){
+    for(let j=-1;j<=1;j+=2){
+      const points=[new THREE.Vector3(i*2.25,2.0,j*1.5),new THREE.Vector3(i*2.25,-0.3,j*1.5)];
+      const lg=new THREE.BufferGeometry().setFromPoints(points);
+      scene.add(new THREE.Line(lg,railMat));
+    }
+  }
+
+  // === HEAT ELEMENTS (upper heater bank — rises away after heating) ===
+  const heatGroup=new THREE.Group();
+  const heatBars=[];
+  for(let i=0;i<4;i++){
+    const barGroup=new THREE.Group();
+    const coreMat=new THREE.MeshBasicMaterial({color:0xfff0d6,transparent:true,opacity:0});
+    const core=new THREE.Mesh(new THREE.BoxGeometry(3.5,0.05,0.12),coreMat);
+    barGroup.add(core);
+    const glowMat=new THREE.MeshBasicMaterial({color:0xe8b85a,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
+    const glow=new THREE.Mesh(new THREE.BoxGeometry(3.7,0.4,0.55),glowMat);
+    barGroup.add(glow);
+    barGroup.position.set(0,0,-0.5+i*0.35);
+    heatGroup.add(barGroup);
+    heatBars.push({coreMat,glowMat,offset:i*0.5});
+  }
+  heatGroup.position.y=2.7; // close to sheet while heating
+  scene.add(heatGroup);
+
+  // === VACUUM AIR PARTICLES (escape under sheet) ===
+  const airCount=48;
+  const airPos=new Float32Array(airCount*3);
+  const airVel=[];
+  for(let i=0;i<airCount;i++){
+    airPos[i*3]=(Math.random()-0.5)*3.5;
+    airPos[i*3+1]=0.2+Math.random()*0.8;
+    airPos[i*3+2]=(Math.random()-0.5)*2.2;
+    airVel.push({vx:(Math.random()-0.5)*0.4, vy:0.3+Math.random()*0.7, vz:(Math.random()-0.5)*0.4, life:Math.random()});
+  }
+  const airGeo=new THREE.BufferGeometry();
+  airGeo.setAttribute('position',new THREE.BufferAttribute(airPos,3));
+  const airMat=new THREE.PointsMaterial({
+    color:0x8ec5e8, size:0.06, transparent:true, opacity:0,
+    blending:THREE.AdditiveBlending, depthWrite:false
+  });
+  const airPoints=new THREE.Points(airGeo,airMat);
+  scene.add(airPoints);
+
+  // HUD elements
+  const elTempCard=document.getElementById('tfTempCard');
+  const elVacCard=document.getElementById('tfVacCard');
+  const elTempVal=document.getElementById('tfTempVal');
+  const elVacVal=document.getElementById('tfVacVal');
+  const elTempBar=document.getElementById('tfTempBar');
+  const elVacBar=document.getElementById('tfVacBar');
+
+  // === ANIMATION STATE ===
+  // Correct thermoform sequence:
+  // 0 idle (formed part stays) | 1 heat+flatten | 2 heaters rise |
+  // 3 mold rises | 4 vacuum (sheet fixed, takes form) | 5 mold down (part keeps form) | 6 heaters return
+  let phase=0;
+  let phaseTime=0;
+  const phaseDurations=[1.8, 2.4, 1.5, 1.8, 2.6, 2.0, 1.6]; // idle, heat, heatUp, moldUp, vacuum, demold, resetHeaters
+  let scrollProgress=0;
+
+  window.thermoformScene={
+    setProgress(p){scrollProgress=Math.max(0,Math.min(1,p));}
+  };
+
+  function smoothstep(a,b,x){
+    const t=Math.max(0,Math.min(1,(x-a)/(b-a)));
+    return t*t*(3-2*t);
+  }
+  function smootherstep(a,b,x){
+    const t=Math.max(0,Math.min(1,(x-a)/(b-a)));
+    return t*t*t*(t*(t*6-15)+10);
+  }
+
+  // Sheet STAYS fixed — clamp frame never moves
+  const SHEET_Y=2.0;
+  sheet.position.y=SHEET_Y;
+  sheetFill.position.y=SHEET_Y;
+
+  // Mold travel: peaks (h≈1.15) touch sheet when moldY + 1.15 ≈ SHEET_Y → moldY≈0.85
+  const MOLD_DOWN=-1.15;
+  const MOLD_UP=0.88;
+  moldGroup.position.y=MOLD_DOWN;
+
+  // Heaters: near sheet while heating, then rise clear
+  const HEAT_LOW=2.7;
+  const HEAT_HIGH=4.0;
+  heatGroup.position.y=HEAT_LOW;
+
+  const MAX_MOLD=1.15;
+  const MOLD_FLOOR=0.06;
+  const SHEET_HALF_W=2.25;
+  const SHEET_HALF_H=1.5;
+
+  function getMoldY(){
+    // Mold up only for approach + vacuum; then descends while part stays formed
+    if(phase<=2) return MOLD_DOWN;
+    if(phase===3){
+      const t=smootherstep(0,1,phaseTime/phaseDurations[3]);
+      return MOLD_DOWN+(MOLD_UP-MOLD_DOWN)*t;
+    }
+    if(phase===4) return MOLD_UP; // vacuum: mold locked up, sheet takes form
+    if(phase===5){
+      // demold: mold retracts downward
+      const t=smootherstep(0,1,phaseTime/phaseDurations[5]);
+      return MOLD_UP+(MOLD_DOWN-MOLD_UP)*t;
+    }
+    // phase 6 + 0: mold stays down
+    return MOLD_DOWN;
+  }
+
+  function getHeatY(){
+    if(phase===0||phase===1) return HEAT_LOW;
+    if(phase===2){
+      const t=smootherstep(0,1,phaseTime/phaseDurations[2]);
+      return HEAT_LOW+(HEAT_HIGH-HEAT_LOW)*t;
+    }
+    if(phase>=3&&phase<=5) return HEAT_HIGH;
+    if(phase===6){
+      const t=smootherstep(0,1,phaseTime/phaseDurations[6]);
+      return HEAT_HIGH+(HEAT_LOW-HEAT_HIGH)*t;
+    }
+    return HEAT_LOW;
+  }
+
+  function getConformAmount(){
+    // 4 vacuum: form onto mold | 5 demold + 6 + 0: KEEP form | 1 heat: flatten for next cycle
+    if(phase===4) return smootherstep(0,1,phaseTime/phaseDurations[4]);
+    if(phase===5||phase===6||phase===0) return 1;
+    if(phase===1) return 1-smootherstep(0,1,phaseTime/phaseDurations[1]);
+    return 0; // 2 heaters up, 3 mold rising — sheet flat
+  }
+
+  function getHeatIntensity(){
+    if(phase===0) return 0.12;
+    if(phase===1) return 0.12+0.88*smootherstep(0,1,phaseTime/phaseDurations[1]);
+    if(phase===2) return Math.max(0,1-phaseTime/phaseDurations[2]*1.2);
+    return 0;
+  }
+
+  function getSheetHeatGlow(){
+    if(phase===1) return smootherstep(0,1,phaseTime/phaseDurations[1]);
+    if(phase===2) return 1;
+    if(phase===3) return 0.9;
+    if(phase===4) return 1;
+    if(phase===5) return 1-0.5*smootherstep(0,1,phaseTime/phaseDurations[5]);
+    if(phase===6) return 0.3*(1-phaseTime/phaseDurations[6]);
+    return 0.12;
+  }
+
+  function moldHeightWithFloor(x,z){
+    return Math.max(MOLD_FLOOR, moldHeightAt(x,z));
+  }
+
+  function deformSheet(){
+    const pos=sheetGeom.attributes.position.array;
+    const vacuum=getConformAmount();
+    const heat=getHeatIntensity();
+    const moldYActual=getMoldY();
+    // Shape is computed against the UP mold pose whenever the part is formed
+    // (including after demold). Mold mesh itself still moves via moldYActual.
+    const moldYShape=(vacuum>0.001)?MOLD_UP:moldYActual;
+
+    for(let i=0;i<pos.length;i+=3){
+      const ox=origPos[i];
+      const oy=origPos[i+1];
+      const nx=ox/SHEET_HALF_W;
+      const ny=oy/SHEET_HALF_H;
+      const radial=Math.min(1, Math.sqrt(nx*nx+ny*ny));
+      const edgeDist=Math.max(Math.abs(nx), Math.abs(ny));
+      const edgeSoft=1-0.2*smootherstep(0.88, 1.0, edgeDist);
+
+      const [fx,fz]=footprintXZ(ox,oy);
+      const moldH=moldHeightWithFloor(fx,fz);
+      const proximity=Math.max(0, Math.min(1, (moldH-MOLD_FLOOR)/(MAX_MOLD-MOLD_FLOOR)));
+
+      // Heat sag while heaters are on / just after — whole sheet softens
+      const sagProfile=(1-radial*radial*0.6);
+      const sagAmount=heat*0.18*sagProfile*edgeSoft*(1-vacuum*0.85);
+
+      // Peak-first vacuum wave
+      const contactDelay=1-proximity;
+      const band=0.62;
+      const localVacuum=smootherstep(contactDelay*(1-band*0.9), contactDelay*(1-band*0.9)+band, vacuum);
+      const drape=localVacuum*edgeSoft;
+
+      // Target relative Z: mold surface in sheet-local space
+      const targetRel=(moldYShape+moldH)-SHEET_Y;
+      const flatRel=-sagAmount;
+      const zRel=flatRel+(targetRel-flatRel)*drape;
+
+      const pull=drape*0.05*(1-proximity)*edgeSoft;
+      pos[i]=ox*(1-pull);
+      pos[i+1]=oy*(1-pull);
+      pos[i+2]=origPos[i+2]+zRel;
+    }
+
+    sheetGeom.attributes.position.needsUpdate=true;
+    // Sheet frame FIXED
+    sheet.position.y=SHEET_Y;
+    sheetFill.position.y=SHEET_Y;
+    sheetFillGeom.attributes.position.needsUpdate=true;
+
+    // Move mold and heaters (sheet shape stays frozen at formed pose when demolded)
+    moldGroup.position.y=moldYActual;
+    heatGroup.position.y=getHeatY();
+  }
+
+  // Duplicate positions for sheetFill
+  const sheetFillGeom=sheetGeom;
+
+  window.addEventListener('resize',resize);
+  resize();
+
+  // === MOUSE / TOUCH DRAG TO ROTATE ===
+  let dragRotY=0,dragRotX=0,isDragging=false,lastPX=0,lastPY=0;
+  canvas.style.cursor='grab';
+  canvas.style.touchAction='none';
+  canvas.addEventListener('pointerdown',(e)=>{
+    isDragging=true;
+    lastPX=e.clientX;lastPY=e.clientY;
+    canvas.style.cursor='grabbing';
+    try{canvas.setPointerCapture(e.pointerId);}catch(_e){}
+  });
+  window.addEventListener('pointermove',(e)=>{
+    if(!isDragging)return;
+    const dx=e.clientX-lastPX,dy=e.clientY-lastPY;
+    lastPX=e.clientX;lastPY=e.clientY;
+    dragRotY+=dx*0.014;
+    dragRotX=Math.max(-0.6,Math.min(0.6,dragRotX+dy*0.01));
+  });
+  function stopDrag(){isDragging=false;canvas.style.cursor='grab';}
+  window.addEventListener('pointerup',stopDrag);
+  window.addEventListener('pointercancel',stopDrag);
+
+  // Only run the (fairly expensive) per-vertex drape simulation and render
+  // calls while the canvas is actually on screen. This is the biggest single
+  // cost in the whole page, so it should not run for sections the user
+  // has already scrolled past or hasn't reached yet.
+  let inView=true;
+  if('IntersectionObserver' in window){
+    inView=false;
+    new IntersectionObserver(function(entries){
+      inView=entries[0].isIntersecting;
+    },{rootMargin:'150px 0px'}).observe(canvas);
+  }
+
+  const clock=new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+
+    if(document.hidden||!inView){
+      clock.getDelta(); // keep clock in sync so motion doesn't jump on return
+      return;
+    }
+
+    const dt=clock.getDelta();
+    const t=clock.getElapsedTime();
+
+    if(!reduceMotion){
+      // Advance phases
+      phaseTime+=dt;
+      if(phaseTime>=phaseDurations[phase]){
+        phaseTime=0;
+        phase=(phase+1)%phaseDurations.length;
+      }
+    }
+
+    deformSheet();
+
+    // Animate heat bars + HUD + air
+    if(!reduceMotion){
+      const barHeat=getHeatIntensity();
+      const sheetGlow=getSheetHeatGlow();
+      const vacuum=getConformAmount();
+      heatBars.forEach(h=>{
+        const flicker=0.85+0.15*Math.sin(t*4+h.offset);
+        h.coreMat.opacity=barHeat*0.95*flicker;
+        h.glowMat.opacity=barHeat*0.45*flicker;
+      });
+      sheetMat.opacity=0.8+0.12*sheetGlow;
+      sheetFillMat.opacity=0.12+0.1*sheetGlow;
+
+      // Temperature HUD
+      let tempC=20;
+      if(phase===1) tempC=20+160*smootherstep(0,1,phaseTime/phaseDurations[1]);
+      else if(phase===2) tempC=180;
+      else if(phase===3) tempC=175;
+      else if(phase===4) tempC=170-50*vacuum;
+      else if(phase===5) tempC=120-20*(phaseTime/phaseDurations[5]);
+      else if(phase===6) tempC=90;
+      else tempC=20+8*barHeat;
+      if(elTempVal) elTempVal.textContent=String(Math.round(tempC));
+      if(elTempBar) elTempBar.style.width=Math.max(0,Math.min(100,((tempC-20)/160)*100))+'%';
+      if(elTempCard) elTempCard.classList.toggle('visible', phase===1||phase===2);
+
+      const vacPct=Math.round(vacuum*100);
+      if(elVacVal) elVacVal.textContent=String(vacPct);
+      if(elVacBar) elVacBar.style.width=vacPct+'%';
+      if(elVacCard) elVacCard.classList.toggle('visible', phase===4);
+
+      // Air only while vacuuming (mold still up)
+      const airOn=(phase===4)?1:0;
+      airMat.opacity=airOn*0.55*Math.min(1,vacuum*1.5+0.2);
+      if(airOn){
+        const arr=airGeo.attributes.position.array;
+        for(let i=0;i<airCount;i++){
+          const v=airVel[i];
+          v.life+=dt*(0.8+Math.random()*0.6);
+          arr[i*3]+=v.vx*dt;
+          arr[i*3+1]+=v.vy*dt;
+          arr[i*3+2]+=v.vz*dt;
+          // reset when risen away
+          if(v.life>1.2||arr[i*3+1]>1.8){
+            arr[i*3]=(Math.random()-0.5)*3.2;
+            arr[i*3+1]=0.05+Math.random()*0.25;
+            arr[i*3+2]=(Math.random()-0.5)*2.0;
+            v.vx=(Math.random()-0.5)*0.5;
+            v.vy=0.4+Math.random()*0.9;
+            v.vz=(Math.random()-0.5)*0.5;
+            v.life=0;
+          }
+        }
+        airGeo.attributes.position.needsUpdate=true;
+      }
+    }else{
+      if(elTempCard) elTempCard.classList.remove('visible');
+      if(elVacCard) elVacCard.classList.remove('visible');
+    }
+    // Slowly auto-rotate when idle, blended with the user's manual drag —
+    // dragging always takes priority and the auto wobble pauses while active.
+    const autoWobble=(reduceMotion||isDragging)?0:Math.sin(t*0.15)*0.12;
+    scene.rotation.y=dragRotY+autoWobble;
+    scene.rotation.x=dragRotX;
+
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* ===== 3D CARD TILT EFFECT ===== */
+(function(){
+  if(window.matchMedia('(hover:none)').matches||window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  document.querySelectorAll('.skill-card,.stat-card,.industry-card,.tool-chip,.cta-box').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=e.clientX-r.left,y=e.clientY-r.top;
+      const cx=r.width/2,cy=r.height/2;
+      const rx=((y-cy)/cy)*-4;
+      const ry=((x-cx)/cx)*4;
+      card.style.transform=`translateY(-8px) perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';
+    });
+  });
+})();
+
+/* ===== CSS LOGO ANIMATION (handled by CSS @keyframes) ===== */
 </script>
-</body>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
 </html>
